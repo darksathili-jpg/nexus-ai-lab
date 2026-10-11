@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1000" viewBox="0 0 1200 1000" role="img" aria-labelledby="title desc">
+<title id="title">NEXUS Secteur 01 : plan coté et coupe de principe G1</title>
+<desc id="desc">Salle 40 par 68 mètres, hauteur 18. Banc central de rayon 8,6 mètres. Console à x12 z moins10 et arrivée à z moins30. La caméra derrière l'arrivée sort du volume proposé : écart non résolu.</desc>
+<defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="3" refY="3" orient="auto-start-reverse"><path d="M0 0L6 3L0 6" fill="none" stroke="#59666c"/></marker><style>text{font-family:Arial,sans-serif;fill:#20282e;font-size:15px}.h{font-size:25px;font-weight:bold}.small{font-size:12px}.dim{stroke:#59666c;stroke-width:1;marker-start:url(#arrow);marker-end:url(#arrow)}.note{fill:#895614}</style></defs>
+<rect width="1200" height="1000" fill="#f3f1ec"/>
+<text x="45" y="40" class="h">NEXUS / S01 — PLAN COTÉ G1</text><text x="45" y="65">Dessin 2D de conception • dimensions contractuelles proposées • aucun modèle 3D</text>
+<line x1="80" y1="95" x2="480" y2="95" class="dim"/><text x="250" y="86">40,00 m</text>
+<line x1="53" y1="120" x2="53" y2="800" class="dim"/><text x="35" y="490" transform="rotate(-90 35 490)">68,00 m</text>
+<rect x="80" y="120" width="400" height="680" fill="#dce0df" stroke="#20282e" stroke-width="3"/>
+<rect x="85" y="125" width="390" height="670" fill="none" stroke="#4bbcca" stroke-width="1.5" stroke-dasharray="6 4"/>
+<g stroke="#9aa5ab" stroke-dasharray="2 6"><line x1="280" y1="120" x2="280" y2="800"/><line x1="80" y1="460" x2="480" y2="460"/></g>
+<g fill="#66737b"><rect x="80" y="190" width="5" height="30"/><rect x="475" y="190" width="5" height="30"/><rect x="80" y="290" width="5" height="30"/><rect x="475" y="290" width="5" height="30"/><rect x="80" y="590" width="5" height="30"/><rect x="475" y="590" width="5" height="30"/></g>
+<circle cx="280" cy="460" r="86" fill="#66737b" stroke="#20282e" stroke-width="2"/>
+<circle cx="280" cy="460" r="91" fill="none" stroke="#dfa24d" stroke-dasharray="5 4"/>
+<text x="224" y="445" fill="white">BANC CENTRAL</text><text x="231" y="468">Ø 17,20 m max.</text><text x="249" y="491">H 7 m</text>
+<rect x="384.5" y="552.2" width="31" height="15.6" transform="rotate(-20.054 400 560)" fill="#4bbcca" stroke="#20282e"/>
+<circle cx="400" cy="560" r="27.4" fill="none" stroke="#4bbcca" stroke-dasharray="3 4"/>
+<text x="429" y="555">M03</text><text x="361" y="610" class="small">zone de travail libre</text>
+<path d="M280 760L400 660L400 600" fill="none" stroke="#4bbcca" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#arrow)"/>
+<circle cx="280" cy="760" r="5" fill="#20282e"/><text x="299" y="764">ARRIVÉE (0 ; −30)</text>
+<circle cx="280" cy="848" r="5" fill="#dfa24d"/><line x1="280" y1="768" x2="280" y2="843" stroke="#dfa24d" stroke-dasharray="3 3"/><text x="300" y="849" class="note">caméra initiale : z ≈ −38,78 m</text>
+<text x="89" y="113">z = +34</text><text x="89" y="824">z = −34</text><text x="80" y="883">Échelle du plan : 10 unités SVG = 1 m ; nord = +Z</text>
+<line x1="85" y1="914" x2="185" y2="914" stroke="#20282e" stroke-width="3"/><text x="85" y="936">0</text><text x="163" y="936">10 m</text>
+<text x="620" y="126" class="h">IMPLANTATION ET LÉGENDE</text>
+<text x="620" y="162">Repère actuel conservé : X horizontal, Y vertical, Z nord.</text>
+<text x="620" y="190">Sol plat Y = 0 ; aucune plateforme parcourable.</text>
+<text x="620" y="224">Pointillés cyan : centre joueur autorisé par les limites</text><text x="620" y="244">actuelles X ±19,5 m / Z ±33,5 m, hors obstacles.</text>
+<text x="620" y="278">Banc : rayon visuel ≤8,6 m ; cercle orange = exclusion</text><text x="620" y="298">du centre joueur à 9,1 m (corps de rayon 0,5 m).</text>
+<text x="620" y="332">M03 : centre (12 ; −10), orientation −0,35 rad.</text><text x="620" y="352">Rectangle = collider 3,10 × 1,56 m, pas tout le signe.</text>
+<text x="620" y="386">Anneau cyan : dégagement de travail 2 m autour</text><text x="620" y="406">du disque enveloppant la console ; vérifier le signe.</text>
+<text x="620" y="440">Chemin cyan = trajet proposé, largeur libre ≥2 m.</text><text x="620" y="460">Les baies en relief et rails restent hors zone autorisée.</text>
+<text x="620" y="494" class="note">ÉCART CAMÉRA : arrière du spawn hors salle.</text><text x="620" y="514" class="note">Prévoir vestibule caméra ou revoir le contrat, après accord.</text>
+<text x="620" y="557" class="h">COUPE TRANSVERSALE DE PRINCIPE</text>
+<rect x="660" y="600" width="400" height="180" fill="#dce0df" stroke="#20282e" stroke-width="2"/>
+<path d="M665 778L665 690L680 620L705 605M1055 778L1055 690L1040 620L1015 605" fill="none" stroke="#66737b" stroke-width="5"/>
+<rect x="774" y="710" width="172" height="70" fill="#66737b"/><text x="804" y="751">banc H 7 m</text>
+<line x1="1090" y1="600" x2="1090" y2="780" class="dim"/><text x="1101" y="691">18 m</text>
+<line x1="660" y1="804" x2="1060" y2="804" class="dim"/><text x="837" y="827">40 m</text>
+<text x="620" y="865">Ribs et baies : volumes proposés, non dimensionnés ici.</text><text x="620" y="887">Aucun débord au sol dans le domaine de déplacement.</text>
+<text x="620" y="923">Perspectives artistiques : intentions, pas preuve métrique.</text>
+<text x="45" y="980" class="small">G1 • 11 octobre 2026 • référence 7d31fae • validation humaine en attente • aucune intégration</text>
+</svg>

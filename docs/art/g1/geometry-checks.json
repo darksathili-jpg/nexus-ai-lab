@@ -1,0 +1,29 @@
+{
+  "kind": "controle analytique de conception, pas test navigateur",
+  "reference": "7d31faee9205471a5fbe435ffb77a1d3aff2bed2",
+  "pathXZ": [
+    [
+      0,
+      -30
+    ],
+    [
+      12,
+      -20
+    ],
+    [
+      12,
+      -14
+    ]
+  ],
+  "corridorWidthM": 2,
+  "sampledCenterPositions": 657,
+  "blockedSamples": 0,
+  "interactionDistanceEndpointM": 4,
+  "camera": {
+    "initialHorizontalRadiusM": 8.781510220439932,
+    "initialZ": -38.781510220439934,
+    "maxHeightM": 16.634134186943307,
+    "minimumPossibleZNearSouthBoundary": -53.44989973208109
+  },
+  "limits": "Aucune geometrie future, occlusion, animation ou performance validee"
+}
