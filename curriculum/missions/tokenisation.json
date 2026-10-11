@@ -1,0 +1,280 @@
+{
+  "id": "M03",
+  "version": 1,
+  "moduleDependencies": [],
+  "objective": "Distinguer mots, sous-mots et identifiants ; programmer et tester un modèle simplifié.",
+  "explanation": "Un tokenizer transforme une chaîne en unités puis en identifiants d'un vocabulaire. Les tokenizers de LLM utilisent notamment des sous-mots ou des octets : un token n'est pas nécessairement un mot. Leur vocabulaire et leurs règles dépendent du modèle. Ici, split() sans argument sépare sur les blancs (espaces, tabulations, retours à la ligne), conserve la ponctuation accolée et ne normalise pas les accents. Ce n'est pas un tokenizer LLM. Les IDs sont des étiquettes, pas une mesure du sens.",
+  "experiment": {
+    "prompt": "Compare « salut, monde ! » avec « salut , monde! ». Modifie le texte puis compare mots et IDs. Le vocabulaire jouet est figé ; 0 désigne un mot inconnu.",
+    "vocabulary": {
+      "<UNK>": 0,
+      "salut,": 1,
+      "monde": 2,
+      "!": 3,
+      "élève": 4
+    }
+  },
+  "levels": {
+    "premiere": {
+      "task": "Implémente tokeniser(texte) : liste des unités séparées par les blancs ; conserve ponctuation et accents.",
+      "starter": "def tokeniser(texte):\n    # Renvoie une liste de chaînes.\n    pass",
+      "tests": [
+        {
+          "fn": "tokeniser",
+          "args": [
+            "bonjour monde"
+          ],
+          "expected": [
+            "bonjour",
+            "monde"
+          ],
+          "label": "Deux mots"
+        },
+        {
+          "fn": "tokeniser",
+          "args": [
+            "  bonjour   monde  "
+          ],
+          "expected": [
+            "bonjour",
+            "monde"
+          ],
+          "label": "Blancs répétés"
+        },
+        {
+          "fn": "tokeniser",
+          "args": [
+            ""
+          ],
+          "expected": [],
+          "label": "Chaîne vide"
+        },
+        {
+          "fn": "tokeniser",
+          "args": [
+            " \t\n "
+          ],
+          "expected": [],
+          "label": "Blancs seuls"
+        },
+        {
+          "fn": "tokeniser",
+          "args": [
+            "élève café"
+          ],
+          "expected": [
+            "élève",
+            "café"
+          ],
+          "label": "Accents"
+        },
+        {
+          "fn": "tokeniser",
+          "args": [
+            "salut, monde !"
+          ],
+          "expected": [
+            "salut,",
+            "monde",
+            "!"
+          ],
+          "label": "Ponctuation"
+        },
+        {
+          "fn": "tokeniser",
+          "args": [
+            "a\tb\nc"
+          ],
+          "expected": [
+            "a",
+            "b",
+            "c"
+          ],
+          "label": "Tabulation et retour à la ligne"
+        },
+        {
+          "fn": "tokeniser",
+          "args": [
+            "inconnu 🚀"
+          ],
+          "expected": [
+            "inconnu",
+            "🚀"
+          ],
+          "label": "Unicode et mot inconnu"
+        }
+      ]
+    },
+    "terminale": {
+      "task": "Implémente tokeniser, encoder(tokens, vocabulaire) et decoder(ids, vocabulaire). encoder utilise 0 pour un mot absent ; decoder renvoie <UNK> pour un ID absent. Le vocabulaire est injectif et contient <UNK>:0.",
+      "starter": "def tokeniser(texte):\n    pass\n\ndef encoder(tokens, vocabulaire):\n    pass\n\ndef decoder(ids, vocabulaire):\n    pass",
+      "tests": [
+        {
+          "fn": "tokeniser",
+          "args": [
+            "bonjour monde"
+          ],
+          "expected": [
+            "bonjour",
+            "monde"
+          ],
+          "label": "Deux mots"
+        },
+        {
+          "fn": "tokeniser",
+          "args": [
+            "  bonjour   monde  "
+          ],
+          "expected": [
+            "bonjour",
+            "monde"
+          ],
+          "label": "Blancs répétés"
+        },
+        {
+          "fn": "tokeniser",
+          "args": [
+            ""
+          ],
+          "expected": [],
+          "label": "Chaîne vide"
+        },
+        {
+          "fn": "tokeniser",
+          "args": [
+            " \t\n "
+          ],
+          "expected": [],
+          "label": "Blancs seuls"
+        },
+        {
+          "fn": "tokeniser",
+          "args": [
+            "élève café"
+          ],
+          "expected": [
+            "élève",
+            "café"
+          ],
+          "label": "Accents"
+        },
+        {
+          "fn": "tokeniser",
+          "args": [
+            "salut, monde !"
+          ],
+          "expected": [
+            "salut,",
+            "monde",
+            "!"
+          ],
+          "label": "Ponctuation"
+        },
+        {
+          "fn": "tokeniser",
+          "args": [
+            "a\tb\nc"
+          ],
+          "expected": [
+            "a",
+            "b",
+            "c"
+          ],
+          "label": "Tabulation et retour à la ligne"
+        },
+        {
+          "fn": "tokeniser",
+          "args": [
+            "inconnu 🚀"
+          ],
+          "expected": [
+            "inconnu",
+            "🚀"
+          ],
+          "label": "Unicode et mot inconnu"
+        },
+        {
+          "fn": "encoder",
+          "args": [
+            [
+              "élève",
+              "absent",
+              "!"
+            ],
+            {
+              "<UNK>": 0,
+              "élève": 7,
+              "!": 2
+            }
+          ],
+          "expected": [
+            7,
+            0,
+            2
+          ],
+          "label": "Encodage et inconnu"
+        },
+        {
+          "fn": "decoder",
+          "args": [
+            [
+              7,
+              0,
+              99,
+              2
+            ],
+            {
+              "<UNK>": 0,
+              "élève": 7,
+              "!": 2
+            }
+          ],
+          "expected": [
+            "élève",
+            "<UNK>",
+            "<UNK>",
+            "!"
+          ],
+          "label": "Décodage et ID inconnu"
+        },
+        {
+          "fn": "encoder",
+          "args": [
+            [],
+            {
+              "<UNK>": 0
+            }
+          ],
+          "expected": [],
+          "label": "Encodage vide"
+        },
+        {
+          "fn": "decoder",
+          "args": [
+            [],
+            {
+              "<UNK>": 0
+            }
+          ],
+          "expected": [],
+          "label": "Décodage vide"
+        }
+      ]
+    }
+  },
+  "hints": [
+    "Une méthode de chaîne sait séparer sur tous les blancs.",
+    "Compare split() et split(\" \") avec une chaîne vide et des espaces répétés.",
+    "Pour les IDs, dictionnaire.get permet une valeur de repli ; inverse le vocabulaire pour décoder."
+  ],
+  "transfer": {
+    "prompt": "Un service compte ses tokens en séparant sur les espaces pour garantir la taille du contexte d'un LLM. Quelle conclusion justifies-tu ?",
+    "choices": [
+      "Ce comptage garantit la taille du contexte de tous les modèles.",
+      "Il faut utiliser le tokenizer du modèle : sous-mots et ponctuation changent le comptage.",
+      "Les IDs les plus grands correspondent aux mots les plus importants."
+    ],
+    "answer": 1,
+    "feedback": "Un comptage par blancs ne garantit pas le nombre de tokens du modèle. Utilise son tokenizer et son vocabulaire ; un ID ne mesure pas une importance."
+  }
+}
