@@ -9,6 +9,7 @@ on:
       - 'src/**'
       - 'public/**'
       - 'tools/build_reactor.py'
+      - 'docs/**'
       - '.github/workflows/playable-build.yml'
 permissions:
   contents: read
