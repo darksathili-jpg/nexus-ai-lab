@@ -33,3 +33,10 @@ Produire un véritable kit d'environnement 3D (GLB et textures PBR sous licence)
 - Les matériaux PBR sont paramétrés, mais **les modèles artistiques GLB et textures raster haut de gamme restent absents**.
 - Cette passe augmente fortement le nombre de maillages et peut dégrader les performances : mesurer les FPS et regrouper les maillages statiques avant publication.
 - Aucun test navigateur ou comparatif visuel n'a encore été exécuté ; l'exigence de ressemblance avec le concept art n'est pas validée.
+
+## V0.4 — Instrumentation et CI
+- Ajout de trois préréglages de résolution interne : `?quality=low`, `?quality=medium`, `?quality=high` ; raccourci `P` pour basculer.
+- FPS et nombre de maillages affichés à l'écran ; la scène suspend son rendu lorsque l'onglet est masqué.
+- Workflow GitHub Actions de vérification syntaxique des modules JavaScript et des fichiers essentiels.
+- **Les performances ne sont pas validées** tant qu'un relevé n'a pas été effectué sur des ordinateurs du lycée. Le nombre élevé de maillages reste un risque.
+- **La fidélité artistique n'est pas validée** : cette version ne contient toujours pas de pack d'environnement GLB détaillé ni de textures photoréalistes.
