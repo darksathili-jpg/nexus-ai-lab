@@ -59,3 +59,9 @@ Produire un véritable kit d'environnement 3D (GLB et textures PBR sous licence)
 - Il enregistre une mesure FPS instantanée et l'empreinte SHA-256 de la capture PNG de bureau dans `artifacts/diagnostics.json`.
 - Attention : un FPS instantané sur runner CI n'est **pas** une mesure représentative des PC du lycée ; aucune garantie de 60 FPS n'est revendiquée.
 - L'empreinte de capture n'est pas une comparaison perceptuelle : elle ne prouve pas la ressemblance au concept art.
+
+## V0.8 — Régression shaders résolue dans le premier test
+- Le test Chromium du commit `dfa628d7` a confirmé `reactor: glb`, `floorTexture: true` et `errors: []` après réduction des variantes d'éclairage PBR. Cette preuve concerne Chromium avec SwiftShader, et ne garantit pas la compatibilité de tous les GPU.
+- La gestion de visibilité a été simplifiée pour ne plus démarrer une deuxième boucle Babylon.
+- Le test inclut désormais une simulation de visibilité et vérifie que les valeurs FPS restent numériques.
+- La validation des commits les plus récents reste indépendante des résultats antérieurs.
