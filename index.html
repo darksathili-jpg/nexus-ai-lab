@@ -29,11 +29,13 @@ for(let i=0;i<240;i++){const theta=i*2.399963,yy=1-2*(i+.5)/240,r=Math.sqrt(1-yy
 for(let i=0;i<110;i++){const a=i*2.399,b=(i+7)*2.399,ya=1-2*(i+.5)/110,yb=1-2*((i+7)%110+.5)/110;const p1=new V(Math.cos(a)*Math.sqrt(1-ya*ya)*2.4,ya*1.8,Math.sin(a)*Math.sqrt(1-ya*ya)*2.4),p2=new V(Math.cos(b)*Math.sqrt(1-yb*yb)*2.4,yb*1.8,Math.sin(b)*Math.sqrt(1-yb*yb)*2.4);const line=BABYLON.MeshBuilder.CreateLines('synapse',{points:[p1,p2]},scene);line.color=new C(.15,.66,.94);line.alpha=.3;line.parent=brain}
 brain.position.y=7.8;
 window.NexusAssets.loadReactor(scene,BABYLON);
-const coreLight=new BABYLON.PointLight('cyan reactor',new V(0,9,0),scene);coreLight.diffuse=C.FromHexString('#4acbf4');coreLight.intensity=170;coreLight.range=35;
+const coreLight=new BABYLON.PointLight('cyan reactor',new V(0,9,0),scene);coreLight.diffuse=C.FromHexString('#4acbf4');coreLight.intensity=170;coreLight.range=35;coreLight.includedOnlyMeshes=[];
 const light=new BABYLON.HemisphericLight('sky ambient',new V(0,1,0),scene);light.intensity=.45;light.diffuse=new C(.58,.77,1);
-for(const s of [-1,1])for(let z=-30;z<=30;z+=15){const l=new BABYLON.PointLight('warm architectural accent',new V(s*28,8,z),scene);l.diffuse=C.FromHexString('#ffb977');l.intensity=40;l.range=17}
+// Use emissive geometry for warm accents: twelve real point lights exceed shader uniform limits on classroom GPUs.
 window.NexusEnvironment.enhance(scene,BABYLON,V,C);
 window.NexusWayfinding.install(scene,BABYLON);
+// Clamp PBR light variants to a conservative WebGL uniform budget.
+for(const m of scene.materials){if(m instanceof BABYLON.PBRMaterial)m.maxSimultaneousLights=2;}
 const player=new BABYLON.TransformNode('player',scene);player.position.set(0,0,-22);
 const placeholder=box('avatar loading stand-in',.8,2,.45,0,1,-22,dark);placeholder.parent=player;placeholder.position.set(0,1,0);
 let animated=false,avatarReady=false;
