@@ -8,7 +8,7 @@ const assert=require('node:assert/strict');
  page.on('pageerror',e=>failures.push(String(e)));
  try{
   await page.goto('http://127.0.0.1:8765/?quality=low',{waitUntil:'domcontentloaded'});
-  await page.waitForFunction(()=>document.querySelector('#loading')?.style.display==='none'||getComputedStyle(document.querySelector('#loading')).opacity==='0',{timeout:40000});
+  await page.waitForFunction(()=>!document.querySelector('#loading')||getComputedStyle(document.querySelector('#loading')).opacity==='0',{timeout:40000});
   await page.waitForFunction(()=>!!window.BABYLON?.Engine?.LastCreatedEngine?.scenes?.[0]?.getMeshByName('station 01 reverse face panel'),{timeout:15000});
   const scene=await page.evaluate(()=>{
    const s=window.BABYLON.Engine.LastCreatedEngine.scenes[0];
