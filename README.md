@@ -23,4 +23,4 @@ Le second groupe exécute Chromium, Babylon et Python Pyodide réels, puis écri
 
 Progrès enregistrés localement par niveau ; aucun nom ni code élève sauvegardé. Les CDN reçoivent les métadonnées réseau habituelles. Le Worker Python est interruptible mais ne constitue pas une sandbox pour code hostile. Connexion nécessaire ; mode hors ligne non livré.
 
-Décisions et limites : [audit initial](docs/PRODUCTION_AUDIT.md), [architecture pédagogique](docs/LEARNING_ARCHITECTURE.md), [plan de production](docs/ACADEMY_PRODUCTION_BLUEPRINT.md).
+Résultats, commits et captures : [rapport de livraison](docs/PRODUCTION_DELIVERY.md). Décisions et limites : [audit initial](docs/PRODUCTION_AUDIT.md), [architecture pédagogique](docs/LEARNING_ARCHITECTURE.md), [plan de production](docs/ACADEMY_PRODUCTION_BLUEPRINT.md).
