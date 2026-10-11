@@ -40,3 +40,10 @@ Produire un véritable kit d'environnement 3D (GLB et textures PBR sous licence)
 - Workflow GitHub Actions de vérification syntaxique des modules JavaScript et des fichiers essentiels.
 - **Les performances ne sont pas validées** tant qu'un relevé n'a pas été effectué sur des ordinateurs du lycée. Le nombre élevé de maillages reste un risque.
 - **La fidélité artistique n'est pas validée** : cette version ne contient toujours pas de pack d'environnement GLB détaillé ni de textures photoréalistes.
+
+## V0.5 — Premier véritable fichier 3D GLB
+- Modèle binaire de sculpture du réacteur généré et vérifié localement (anneaux, supports et neurones en volume, 225 objets géométriques, environ 315 Ko).
+- Générateur reproductible : `tools/build_reactor.py` ; workflow `build-assets.yml` pour produire et committer le fichier dans `public/assets/` depuis GitHub Actions.
+- Chargeur `src/asset-loader.js` intégré : utilise le GLB lorsqu'il est présent ; conserve explicitement le réacteur provisoire sinon.
+- **Attention** : le workflow GitHub Actions n'a pas encore été observé en succès, et la présence du binaire sur la branche n'est pas confirmée. Le rendu n'est pas validé visuellement.
+- Le GLB est un composant de sculpture, pas un décor architectural photoréaliste complet : la conformité à la référence reste refusée.
