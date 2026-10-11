@@ -7,6 +7,8 @@ on:
     paths:
       - 'index.html'
       - 'src/**'
+      - 'academy.html'
+      - 'curriculum/**'
       - 'public/**'
       - '.github/workflows/preview-pages.yml'
 permissions:
@@ -40,11 +42,13 @@ jobs:
           test -s public/assets/nexus-core-sculpture.glb
       - name: Assemble isolated static preview
         run: |
-          mkdir -p _preview/src _preview/public/assets
+          mkdir -p _preview/src _preview/public/assets _preview/curriculum
           cp index.html _preview/index.html
+          cp academy.html _preview/
+          cp curriculum/*.json _preview/curriculum/
           cp src/*.js _preview/src/
           cp public/assets/nexus-core-sculpture.glb _preview/public/assets/
-          printf 'NEXUS preview — experimental branch; not a production release.\n' > _preview/PREVIEW.txt
+          printf 'NEXUS preview â€” experimental branch; not a production release.\n' > _preview/PREVIEW.txt
           test -s _preview/index.html
       - name: Archive playable preview independently of Pages
         uses: actions/upload-artifact@v4

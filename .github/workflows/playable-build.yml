@@ -7,6 +7,8 @@ on:
     paths:
       - 'index.html'
       - 'src/**'
+      - 'academy.html'
+      - 'curriculum/**'
       - 'public/**'
       - 'tools/build_reactor.py'
       - 'docs/**'
@@ -29,8 +31,10 @@ jobs:
           test -s public/assets/nexus-core-sculpture.glb
       - name: Assemble playable website
         run: |
-          mkdir -p _playable/src _playable/public/assets
+          mkdir -p _playable/src _playable/public/assets _playable/curriculum
           cp index.html _playable/
+          cp academy.html _playable/
+          cp curriculum/*.json _playable/curriculum/
           cp src/*.js _playable/src/
           cp public/assets/nexus-core-sculpture.glb _playable/public/assets/
           test -s _playable/index.html

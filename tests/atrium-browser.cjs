@@ -14,7 +14,7 @@ const crypto = require('node:crypto');
  fs.mkdirSync('artifacts',{recursive:true});
  await page.screenshot({path:'artifacts/atrium-desktop.png',fullPage:true});
  const result=await page.evaluate(()=>({
-  fps: Number((document.querySelector('#nexus-diagnostics')?.textContent||'').match(/(\\d+) FPS/)?.[1]||0),
+  fps: Number((document.querySelector('#nexus-diagnostics')?.textContent||'').match(/(\d+) FPS/)?.[1]||0),
   renderedFrames:window.BABYLON?.Engine?.LastCreatedEngine?.getFps?.()||0,
   floorTexture:!!window.BABYLON?.Engine?.LastCreatedEngine?.scenes?.[0]?.getMaterialByName('polished dark stone')?.albedoTexture,
   canvas:!!document.querySelector('#game'),

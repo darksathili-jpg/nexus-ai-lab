@@ -1,0 +1,12 @@
+{
+  "name": "nexus-ai-lab",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "node tests/collision.cjs && node tests/collision-gate.cjs && node tests/curriculum-gate.cjs",
+    "test:browser": "node tests/quality-gate.cjs && node tests/atrium-browser.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1"
+  }
+}
