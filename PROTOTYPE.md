@@ -21,3 +21,9 @@ CesiumMan, Khronos glTF Sample Models : https://github.com/KhronosGroup/glTF-Sam
 
 ## Prochaine gate
 Produire un véritable kit d'environnement 3D (GLB et textures PBR sous licence), l'intégrer, puis capturer et comparer le résultat réel à l'image de référence. Ne pas déclarer le rendu conforme sans cette preuve.
+
+## V0.2 — Risques de sécurité et tests encore nécessaires
+- Le Worker protège l'interface contre une boucle infinie en permettant sa terminaison, mais **ne constitue pas un bac à sable de sécurité certifié** pour du code hostile.
+- Les CDN doivent être auto-hébergés et figés avant déploiement scolaire robuste.
+- Les tests navigateur, accessibilité et performance n'ont pas été exécutés ici.
+- Le développement artistique et la création des assets GLB/PBR restent le blocage principal de conformité.
