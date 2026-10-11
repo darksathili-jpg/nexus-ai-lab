@@ -49,6 +49,21 @@ window.NexusEnvironment={
    box('atrium grand staircase step',6,.23,.41,s*12.7,y,z,ivory);
    box('stair nosing luminaire',6,.045,.07,s*12.7,y+.13,z-.19,glow);
  }
+ // Merge static, same-material mesh groups to reduce render draw calls.
+ // Preserve emissive and PBR material identities, and never merge interactive objects.
+ const groups=new Map();
+ for(const m of scene.meshes){
+  if(!m.material || !m.name || !m.getTotalVertices || !m.getTotalVertices())continue;
+  if(!/^(fluted column shaft|column brass collar|column up-light|gallery layered cornice|balcony vertical baluster|balcony warm strip|suspended pendant|pendant diffuser|pendant cable|architectural planter base|soil insert|branch|botanical leaf cluster|atrium grand staircase step|stair nosing luminaire|radial floor inset)/.test(m.name))continue;
+  const id=m.material.uniqueId;
+  if(!groups.has(id))groups.set(id,[]);
+  groups.get(id).push(m);
+ }
+ for(const [id,meshes] of groups){
+  if(meshes.length<3)continue;
+  const merged=B.Mesh.MergeMeshes(meshes,true,true,undefined,false,true);
+  if(merged){merged.name='static environment batch '+id;merged.isPickable=false;merged.freezeWorldMatrix()}
+ }
  return {status:'architectural-detailing-pass',note:'Detailed geometry and PBR materials are real 3D; final authored environment assets and visual validation are still pending.'};
  }
 };
