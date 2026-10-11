@@ -22,8 +22,7 @@ window.NexusPerformance={
     stats.textContent='QUALITÉ '+quality.toUpperCase()+' · '+fps+' FPS · '+scene.meshes.length+' MAILLAGES';
    }
   });
-  const visibility=()=>{if(document.hidden)engine.stopRenderLoop();else engine.runRenderLoop(()=>scene.render())};
-  document.addEventListener('visibilitychange',visibility);
+  // Babylon owns its render loop; don't register another loop on tab visibility changes.
   window.addEventListener('keydown',e=>{
    if(e.target instanceof HTMLElement&&['TEXTAREA','INPUT'].includes(e.target.tagName))return;
    if(e.key.toLowerCase()==='p'){
@@ -31,6 +30,6 @@ window.NexusPerformance={
     const url=new URL(location.href);url.searchParams.set('quality',q);location.href=url.toString();
    }
   });
-  return {quality,ratio,dispose(){document.removeEventListener('visibilitychange',visibility);stats.remove()}};
+  return {quality,ratio,dispose(){stats.remove()}};
  }
 };
