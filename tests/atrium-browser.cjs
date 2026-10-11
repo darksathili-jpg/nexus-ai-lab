@@ -23,7 +23,9 @@ const crypto = require('node:crypto');
   meshes:window.BABYLON?.Engine?.LastCreatedEngine?.scenes?.[0]?.meshes?.length||0,
   diagnostics:document.querySelector('#nexus-diagnostics')?.textContent||'',
   reactor:document.body.dataset.reactor||'pending',
-  webgl:!!document.querySelector('canvas')
+  webgl:!!document.querySelector('canvas'),
+  actualCanvasWidth:document.querySelector('#game')?.width||0,
+  actualCanvasHeight:document.querySelector('#game')?.height||0
  }));
  const desktopPng=fs.readFileSync('artifacts/atrium-desktop.png');
  const imageHash=crypto.createHash('sha256').update(desktopPng).digest('hex');
@@ -37,5 +39,5 @@ const crypto = require('node:crypto');
  const afterVisibility=await page.evaluate(()=>window.BABYLON?.Engine?.LastCreatedEngine?.getFps?.()||0);
  if(!Number.isFinite(beforeVisibility)||!Number.isFinite(afterVisibility))throw Error('Invalid FPS after visibility restoration');
  await browser.close();
- if(!result.loaded||!result.meshes||result.reactor!=='glb'||!result.floorTexture||errors.some(e=>/uncaught|syntaxerror|referenceerror|shader|uniform block|webgl|compilation/i.test(e)))process.exitCode=1;
+ if(!result.actualCanvasWidth||!result.actualCanvasHeight||!result.loaded||!result.meshes||result.reactor!=='glb'||!result.floorTexture||errors.some(e=>/uncaught|syntaxerror|referenceerror|shader|uniform block|webgl|compilation/i.test(e)))process.exitCode=1;
 })().catch(e=>{console.error(e);process.exitCode=1});
