@@ -1,0 +1,4 @@
+REPRODUCED: 1/5, zero attempts, run disabled; no Python execution requested
+PASS: simulated CDN failure reports error, re-enables button and preserves draft
+PASS: CDN restored, retry succeeds with unchanged draft
+PASS: missing function reported, retry succeeds

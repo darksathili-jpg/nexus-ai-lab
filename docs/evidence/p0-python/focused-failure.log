@@ -1,0 +1,22 @@
+REPRODUCED: 1/5, zero attempts, run disabled; no Python execution requested
+node : AssertionError [ERR_ASSERTION]: The input did not match the regular expression /connexion|réessaie/i. Input:
+Au caractère Ligne:2 : 1
++ node artifacts/p0-focused.cjs > artifacts/p0-focused-source.log 2>&1
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (AssertionError ...ssaie/i. Input::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+'Consulte le détail et corrige une cause à la fois.\n' +
+  "Détail Python : NetworkError: Failed to execute 'importScripts' on 'WorkerGlobalScope': The script at 
+'https://cdn.jsdelivr.net/pyodide/v0.27.7/full/pyodide.js' failed to load."
+
+    at C:\Users\tsaut\OneDrive\Documents\GitHub\nexus-ai-lab\artifacts\p0-focused.cjs:16:9 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'Consulte le détail et corrige une cause à la fois.\n' +
+    "Détail Python : NetworkError: Failed to execute 'importScripts' on 'WorkerGlobalScope': The script at 
+'https://cdn.jsdelivr.net/pyodide/v0.27.7/full/pyodide.js' failed to load.",
+  expected: /connexion|réessaie/i,
+  operator: 'match'
+}

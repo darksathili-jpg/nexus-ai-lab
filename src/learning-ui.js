@@ -116,7 +116,7 @@
  $('help').onclick=()=>{if(!ready)return;$('helpText').textContent=definition.hints[hint++];$('help').textContent='Indice '+Math.min(hint+1,3);$('help').disabled=hint>=definition.hints.length};
  function feedback(msg){
   if(msg.error){const error=msg.error;
-   const advice=/SyntaxError|IndentationError/.test(error)?'Vérifie la syntaxe, les deux-points et l’indentation.':/NameError/.test(error)?'Vérifie les noms et les variables définies.':/TypeError/.test(error)?'Vérifie le type des paramètres et de la valeur renvoyée.':/12 s/.test(error)?'Vérifie que tes boucles peuvent terminer, puis relance.':/charg|Chargement|Catalogue|indisponible/i.test(error)?'Vérifie la connexion et réessaie ; ton brouillon est conservé.':'Consulte le détail et corrige une cause à la fois.';
+   const advice=/SyntaxError|IndentationError/.test(error)?'Vérifie la syntaxe, les deux-points et l’indentation.':/NameError/.test(error)?'Vérifie les noms et les variables définies.':/TypeError/.test(error)?'Vérifie le type des paramètres et de la valeur renvoyée.':/12 s/.test(error)?'Vérifie que tes boucles peuvent terminer, puis relance.':/charg|Catalogue|indisponible|importScripts|loadPyodide|NetworkError|Failed to fetch|failed to load/i.test(error)?'Vérifie la connexion et réessaie ; ton brouillon est conservé.':'Consulte le détail et corrige une cause à la fois.';
    return advice+'\nDétail Python : '+error;
   }
   if(!Array.isArray(msg.results))return 'Réponse Python incomplète. Réessaie ; aucun progrès n’est accordé.';

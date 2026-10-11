@@ -1,0 +1,24 @@
+const {chromium}=require('playwright');const assert=require('node:assert/strict');
+(async()=>{const browser=await chromium.launch({headless:true,args:['--use-gl=angle','--use-angle=swiftshader','--enable-webgl','--ignore-gpu-blocklist']});
+try{
+ const page=await browser.newPage();
+ await page.goto((process.env.NEXUS_BASE_URL||'http://127.0.0.1:8765/')+'?quality=low');
+ await page.waitForFunction(()=>!document.getElementById('loading'),null,{timeout:60000});await page.click('#openLearning');
+ await page.waitForFunction(()=>document.getElementById('objective').textContent);
+ for(const [id,value] of [['word','1'],['subword','0'],['token','1'],['identifier','2']])await page.selectOption('#understanding-'+id,value);
+ await page.click('#understand');assert.match(await page.locator('#learningStatus').textContent(),/1\/5/);assert(await page.locator('#run').isDisabled());
+ console.log('REPRODUCED: 1/5, zero attempts, run disabled; no Python execution requested');
+ await page.fill('#predictSplit','2');await page.fill('#predictSubwords','3');await page.click('#savePrediction');await page.click('#experiment');await page.fill('#sample','chat !');await page.click('#experiment');
+ await page.selectOption('#interpretation-difference','0');await page.selectOption('#interpretation-unknown','1');await page.click('#validateExperiment');assert.match(await page.locator('#learningStatus').textContent(),/2\/5/);assert(await page.locator('#run').isEnabled());
+ const code='def tokeniser(texte):\n    return texte.split()';await page.fill('#code',code);
+ await page.route('https://cdn.jsdelivr.net/pyodide/**',r=>r.abort('internetdisconnected'));
+ await page.click('#run');await page.waitForFunction(()=>!document.getElementById('run').disabled,null,{timeout:75000});
+ assert.match(await page.locator('#result').textContent(),/connexion|réessaie/i);assert.equal(await page.locator('#code').inputValue(),code);
+ console.log('PASS: simulated CDN failure reports error, re-enables button and preserves draft');
+ await page.unroute('https://cdn.jsdelivr.net/pyodide/**');await page.click('#run');await page.waitForFunction(()=>!document.getElementById('run').disabled,null,{timeout:75000});assert.match(await page.locator('#result').textContent(),/Tests réussis/);
+ console.log('PASS: CDN restored, retry succeeds with unchanged draft');
+ await page.fill('#code','pass');await page.click('#run');await page.waitForFunction(()=>!document.getElementById('run').disabled,null,{timeout:75000});
+ assert.match(await page.locator('#result').textContent(),/Fonction tokeniser introuvable/);
+ await page.fill('#code',code);await page.click('#run');await page.waitForFunction(()=>!document.getElementById('run').disabled,null,{timeout:75000});assert.match(await page.locator('#result').textContent(),/Tests réussis/);
+ console.log('PASS: missing function reported, retry succeeds');
+}finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});
