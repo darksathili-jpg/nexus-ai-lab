@@ -31,6 +31,8 @@ const crypto = require('node:crypto');
  console.log(JSON.stringify({result,errors},null,2));
  await page.setViewportSize({width:390,height:844});
  await page.screenshot({path:'artifacts/atrium-mobile.png',fullPage:true});
+ await page.evaluate(()=>document.dispatchEvent(new Event('visibilitychange')));
+ await page.waitForTimeout(500);
  await browser.close();
  if(!result.loaded||!result.meshes||result.reactor!=='glb'||!result.floorTexture||errors.some(e=>/uncaught|syntaxerror|referenceerror|shader|uniform block|webgl|compilation/i.test(e)))process.exitCode=1;
 })().catch(e=>{console.error(e);process.exitCode=1});
