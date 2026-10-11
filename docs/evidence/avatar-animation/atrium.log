@@ -1,0 +1,17 @@
+{
+  "result": {
+    "fps": 6,
+    "renderedFrames": 7.038948850305019,
+    "floorTexture": true,
+    "canvas": true,
+    "loaded": true,
+    "mission": true,
+    "meshes": 734,
+    "diagnostics": "QUALITÉ LOW · 6 FPS · 734 MAILLAGES",
+    "reactor": "glb",
+    "webgl": true,
+    "actualCanvasWidth": 800,
+    "actualCanvasHeight": 500
+  },
+  "errors": []
+}

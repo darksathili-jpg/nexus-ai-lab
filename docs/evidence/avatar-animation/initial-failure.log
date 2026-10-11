@@ -1,0 +1,10 @@
+node : page.waitForFunction: Timeout 30000ms exceeded.
+Au caractère Ligne:6 : 2
++  node tests/avatar-browser.cjs > artifacts/avatar-browser.log 2>&1
++  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (page.waitForFun...000ms exceeded.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    at C:\Users\tsaut\OneDrive\Documents\GitHub\nexus-ai-lab\tests\avatar-browser.cjs:16:210 {
+  name: 'TimeoutError'
+}
