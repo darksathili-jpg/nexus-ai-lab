@@ -10,7 +10,7 @@ const crypto = require('node:crypto');
  page.on('console',msg=>{if(msg.type()==='error')errors.push(msg.text())});
  await page.goto((process.env.NEXUS_BASE_URL||'http://127.0.0.1:8765/')+'?quality=low',{waitUntil:'domcontentloaded'});
  await page.waitForTimeout(18000);
- await page.waitForFunction(()=>['glb','fallback'].includes(document.body.dataset.reactor),{timeout:10000}).catch(()=>{});
+ await page.waitForFunction(()=>['glb','fallback'].includes(document.body.dataset.reactor),null,{timeout:10000}).catch(()=>{});
  fs.mkdirSync('artifacts',{recursive:true});
  await page.screenshot({path:'artifacts/atrium-desktop.png',fullPage:true});
  const result=await page.evaluate(()=>({

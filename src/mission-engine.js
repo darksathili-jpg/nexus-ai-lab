@@ -16,7 +16,13 @@
   function record(id,level){
    const d=defs.get(id);if(!d||!d.levels[level])throw Error('Mission ou niveau indisponible');
    const k=id+':'+level,r=state[k];
-   if(!r||r.version!==d.version||!Array.isArray(r.steps))state[k]={version:d.version,steps:[],attempts:0};
+   if(!r||r.version!==d.version||!Array.isArray(r.steps))state[k]={version:d.version,pedagogyRevision:d.pedagogyRevision||1,steps:[],attempts:0};
+   const revision=d.pedagogyRevision||1;
+   if((state[k].pedagogyRevision||1)!==revision){
+    const old=state[k];state[k]={version:d.version,pedagogyRevision:revision,steps:[],attempts:old.attempts,
+     previousSteps:[...old.steps],pythonValidated:old.steps.includes('programmer')&&old.steps.includes('tester')};
+    save();
+   }
    const current=state[k];let count=0;
    while(count<steps.length&&current.steps.includes(steps[count]))count++;
    current.steps=steps.slice(0,count);
@@ -30,8 +36,9 @@
   }
   function save(){try{storage.setItem(key,JSON.stringify({version:2,records:state}));persistent=true}catch(e){persistent=false}}
   return {status,record,persistent:()=>persistent,
-   mark(id,level,step){if(!steps.includes(step))throw Error('Étape invalide');if(status(id,level)==='locked')throw Error('Mission verrouillée');const r=record(id,level);const preceding=steps.slice(0,steps.indexOf(step));if(!preceding.every(s=>r.steps.includes(s)))throw Error('Terminer les étapes précédentes');if(!r.steps.includes(step))r.steps.push(step);save();return status(id,level)},
+   mark(id,level,step){if(!steps.includes(step))throw Error('Étape invalide');if(status(id,level)==='locked')throw Error('Mission verrouillée');const r=record(id,level);const preceding=steps.slice(0,steps.indexOf(step));if(!preceding.every(s=>r.steps.includes(s)))throw Error('Terminer les étapes précédentes');if(!r.steps.includes(step))r.steps.push(step);if(step==='tester')r.pythonValidated=true;save();return status(id,level)},
    attempt(id,level){const r=record(id,level);r.attempts++;save()},
+   evidence(id,level,value){if(!value||typeof value!=='object'||Array.isArray(value))throw Error('Dossier invalide');record(id,level).evidence=JSON.parse(JSON.stringify(value));save()},
    modules:()=>curriculum.modules.map(m=>({...m,status:status(m.id,'premiere')}))};
  }
  root.NexusMissionEngine={create,steps};

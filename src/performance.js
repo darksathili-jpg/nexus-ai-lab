@@ -24,7 +24,8 @@ window.NexusPerformance={
   });
   // Babylon owns its render loop; don't register another loop on tab visibility changes.
   window.addEventListener('keydown',e=>{
-   if(e.target instanceof HTMLElement&&['TEXTAREA','INPUT'].includes(e.target.tagName))return;
+   if(document.body.classList.contains('inMission'))return;
+   if(e.target instanceof HTMLElement&&['TEXTAREA','INPUT','SELECT','BUTTON'].includes(e.target.tagName))return;
    if(e.key.toLowerCase()==='p'){
     const q=quality==='high'?'low':quality==='medium'?'high':'medium';
     const url=new URL(location.href);url.searchParams.set('quality',q);location.href=url.toString();

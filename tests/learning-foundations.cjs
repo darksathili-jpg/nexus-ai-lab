@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict');require('../src/tokenisation-model.js');
+const m=NexusTokenisation.validate(require('../curriculum/missions/tokenisation.json'));
+let c=NexusTokenisation.compare('chats !',m.experiment);
+assert.deepEqual(c.split.units,['chats','!']);assert.deepEqual(c.simulation.units,['chat','s','!']);assert.deepEqual(c.simulation.ids,[7,2,3]);
+assert.equal(c.split.unknowns,1);assert.deepEqual(c.split.decoded,['<UNK>','!']);
+assert.deepEqual(NexusTokenisation.split(' \u0085élève\t🚀\n'),['élève','🚀']);
+assert.deepEqual(NexusTokenisation.encode(['constructor','__proto__','élève'],m.experiment.vocabulary),[0,0,8]);
+assert.deepEqual(NexusTokenisation.simulate('',m.experiment.pieces),[]);
+assert.deepEqual(NexusTokenisation.simulate('Chat',m.experiment.pieces),['C','h','a','t']);
+assert.throws(()=>NexusTokenisation.validate({...m,levels:{}}),/Python/);
+console.log('LEARNING FOUNDATIONS PASS: split/subwords/IDs/Unicode/unknowns and content validation');

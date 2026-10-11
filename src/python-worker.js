@@ -8,7 +8,7 @@ self.onmessage=async({data})=>{
   const manifest=await manifestResponse.json();
   const entry=manifest.missions.find(m=>m.id===missionId);
   if(!entry||!/^[a-z0-9-]+\.json$/.test(entry.path))throw Error('Évaluation indisponible');
-  if(typeof code!=='string'||code.length>32768)throw Error('Code trop volumineux (32 Ko maximum)');
+  if(typeof code!=='string'||code.length>32768)throw Error('Code trop long (32 768 caractères maximum)');
   const response=await fetch('../curriculum/missions/'+entry.path);
   if(!response.ok)throw Error('Tests de mission indisponibles');
   const definition=await response.json();

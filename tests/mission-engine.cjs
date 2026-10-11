@@ -30,3 +30,15 @@ assert.equal(NexusMissionEngine.create(curriculum,[mission],{getItem:()=>'{bad',
 engine=NexusMissionEngine.create(curriculum,[mission],{getItem:()=>JSON.stringify({version:2,records:{'M03:premiere':{version:1,steps:['tester','transferer'],attempts:'bad'}}}),setItem(){}});
 assert.equal(engine.status('M03','premiere'),'available');assert.equal(engine.record('M03','premiere').attempts,0);
 console.log('MISSION ENGINE PASS: order, persistence, levels, versions, storage failures, locks, cycles');
+const oldSteps=[...NexusMissionEngine.steps];let oldRaw=JSON.stringify({version:2,records:{'M03:premiere':{version:1,steps:oldSteps,attempts:4}}});
+const migrated=NexusMissionEngine.create(curriculum,[mission],{getItem:()=>oldRaw,setItem:(_,v)=>oldRaw=v});
+assert.equal(migrated.status('M03','premiere'),'available');
+assert.deepEqual(migrated.record('M03','premiere').previousSteps,oldSteps);
+assert.equal(migrated.record('M03','premiere').pythonValidated,true);assert.equal(migrated.record('M03','premiere').attempts,4);
+const resumed=NexusMissionEngine.create(curriculum,[mission],{getItem:()=>oldRaw,setItem(){}});
+assert.deepEqual(resumed.record('M03','premiere').previousSteps,oldSteps);
+assert.equal(resumed.record('M03','premiere').pedagogyRevision,2);
+console.log('MIGRATION PASS: previous steps/attempts/Python evidence retained, revised activities required, reload idempotent');
+let writes=0;
+const corruptRead=NexusMissionEngine.create(curriculum,[mission],{getItem:()=>'{broken',setItem(){writes++}});
+assert.equal(corruptRead.status('M03','premiere'),'available');assert.equal(writes,0,'Reading a corrupt record must not overwrite storage');

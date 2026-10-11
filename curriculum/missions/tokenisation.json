@@ -3,16 +3,50 @@
   "version": 1,
   "moduleDependencies": [],
   "objective": "Distinguer mots, sous-mots et identifiants ; programmer et tester un modèle simplifié.",
-  "explanation": "Un tokenizer transforme une chaîne en unités puis en identifiants d'un vocabulaire. Les tokenizers de LLM utilisent notamment des sous-mots ou des octets : un token n'est pas nécessairement un mot. Leur vocabulaire et leurs règles dépendent du modèle. Ici, split() sans argument sépare sur les blancs (espaces, tabulations, retours à la ligne), conserve la ponctuation accolée et ne normalise pas les accents. Ce n'est pas un tokenizer LLM. Les IDs sont des étiquettes, pas une mesure du sens.",
+  "explanation": "Un mot est une unité de langue ; un token est une unité choisie par un tokenizer. Selon le modèle, un token peut être un mot, un sous-mot, un signe ou une unité liée aux octets. Un sous-mot peut donc être un token. Un identifiant numérique est une étiquette du vocabulaire : son ordre ne mesure ni sens ni importance. Python split() sans argument découpe sur les blancs, garde la ponctuation accolée et ne normalise pas les accents. Notre simulation utilise des pièces fixées à la main : elle n'entraîne ni BPE ni WordPiece et ne reproduit aucun tokenizer industriel. Les tokenizers réels varient ; certains utilisent un token inconnu, d'autres couvrent les octets et évitent ce repli.",
   "experiment": {
-    "prompt": "Compare « salut, monde ! » avec « salut , monde! ». Modifie le texte puis compare mots et IDs. Le vocabulaire jouet est figé ; 0 désigne un mot inconnu.",
+    "prompt": "Avant de comparer, prédis le nombre d’unités de chaque découpage pour « chats ! ». Observe, puis remplace le texte par « chat ! » ou un exemple personnel. Explique ensuite la différence et la perte liée aux unités inconnues.",
+    "rule": "Simulation : séparer lettres et ponctuation, puis prendre la pièce de vocabulaire la plus longue à chaque position. Un caractère non couvert devient une unité inconnue. Les blancs sont omis et la casse/les accents sont conservés. Ces choix manuels ne sont pas BPE : pas d’apprentissage, de fusions ou de règle industrielle.",
+    "initial": "chats !",
+    "pieces": [
+      "chat",
+      "s",
+      "!",
+      "salut",
+      ",",
+      "monde",
+      "élève"
+    ],
     "vocabulary": {
       "<UNK>": 0,
-      "salut,": 1,
-      "monde": 2,
+      "chat": 7,
+      "s": 2,
       "!": 3,
-      "élève": 4
-    }
+      "salut": 4,
+      ",": 5,
+      "monde": 6,
+      "élève": 8
+    },
+    "interpretation": [
+      {
+        "id": "difference",
+        "prompt": "Pourquoi « chats ! » donne-t-il plus d’unités dans notre simulation que dans split() ?",
+        "choices": [
+          "Le vocabulaire permet « chat » puis « s » ; split() conserve « chats ».",
+          "Un ID élevé crée automatiquement plus de tokens."
+        ],
+        "answer": "0"
+      },
+      {
+        "id": "unknown",
+        "prompt": "Après encodage avec 0 pour une unité inconnue, que permet le décodage ?",
+        "choices": [
+          "Retrouver à coup sûr le texte original.",
+          "Retrouver <UNK>, mais pas l’unité originale ; l’information est perdue."
+        ],
+        "answer": "1"
+      }
+    ]
   },
   "levels": {
     "premiere": {
@@ -268,13 +302,64 @@
     "Pour les IDs, dictionnaire.get permet une valeur de repli ; inverse le vocabulaire pour décoder."
   ],
   "transfer": {
-    "prompt": "Un service compte ses tokens en séparant sur les espaces pour garantir la taille du contexte d'un LLM. Quelle conclusion justifies-tu ?",
-    "choices": [
-      "Ce comptage garantit la taille du contexte de tous les modèles.",
-      "Il faut utiliser le tokenizer du modèle : sous-mots et ponctuation changent le comptage.",
-      "Les IDs les plus grands correspondent aux mots les plus importants."
+    "prompt": "Un camarade veut transmettre « microchats, 🚀 » à deux LLM différents. Il compte les mots par split() et annonce que les modèles recevront le même nombre de tokens. Rédige une note qui critique cette garantie, propose une vérification et explique ce que devient une unité absente du vocabulaire jouet. N’invente pas le découpage réel des modèles.",
+    "rubric": [
+      "Je distingue le nombre de mots et le nombre de tokens, avec un exemple de sous-mot ou de ponctuation.",
+      "Je propose d’utiliser le tokenizer et le vocabulaire exacts de chaque modèle, sans prétendre connaître leurs résultats à l’avance.",
+      "J’explique que le repli vers 0/<UNK> de notre vocabulaire jouet perd de l’information et n’est pas universel.",
+      "Je distingue les unités textuelles de leurs IDs et ne prête pas de sens à leur ordre numérique."
     ],
-    "answer": 1,
-    "feedback": "Un comptage par blancs ne garantit pas le nombre de tokens du modèle. Utilise son tokenizer et son vocabulaire ; un ID ne mesure pas une importance."
-  }
+    "notice": "Le texte libre n’est pas corrigé sémantiquement par le logiciel. Compare-le à la grille et coche seulement les critères réellement argumentés. L’autoévaluation déclare le parcours réalisé ; un enseignant doit relire la justification avant de certifier la maîtrise."
+  },
+  "pedagogyRevision": 2,
+  "understanding": [
+    {
+      "id": "word",
+      "prompt": "Dans la langue française, « chats » est un mot. Cela garantit-il un token unique dans tous les LLM ?",
+      "choices": [
+        "Oui, un mot donne toujours un token.",
+        "Non, le découpage dépend du tokenizer."
+      ],
+      "answer": "1"
+    },
+    {
+      "id": "subword",
+      "prompt": "Notre simulation découpe « chats » en « chat » et « s ». Quel rôle a « s » ?",
+      "choices": [
+        "Un sous-mot qui sert ici de token.",
+        "Un identifiant numérique.",
+        "Un mot français autonome dans cet exemple."
+      ],
+      "answer": "0"
+    },
+    {
+      "id": "token",
+      "prompt": "Un tokenizer produit une unité « ! ». Peut-elle être un token sans être un mot ?",
+      "choices": [
+        "Non, seuls les mots sont des tokens.",
+        "Oui, la ponctuation peut former un token."
+      ],
+      "answer": "1"
+    },
+    {
+      "id": "identifier",
+      "prompt": "Le vocabulaire associe « chat » à 7 et « s » à 2. Que signifie 7 ?",
+      "choices": [
+        "« chat » est plus important que « s ».",
+        "« chat » occupe sept caractères.",
+        "C’est une étiquette de vocabulaire, sans classement sémantique."
+      ],
+      "answer": "2"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Hugging Face — Tokenization algorithms",
+      "url": "https://huggingface.co/docs/transformers/tokenizer_summary"
+    },
+    {
+      "title": "Python — str.split",
+      "url": "https://docs.python.org/3/library/stdtypes.html#str.split"
+    }
+  ]
 }
