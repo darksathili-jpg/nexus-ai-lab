@@ -29,6 +29,8 @@ jobs:
         run: |
           python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/nexus-http.log 2>&1 &
           sleep 2
+      - name: Deterministic swept-collision regression gate
+        run: node tests/collision-gate.cjs
       - name: Blocking mobile and signage regression gate
         run: node tests/quality-gate.cjs
       - name: Capture real engine screenshots
