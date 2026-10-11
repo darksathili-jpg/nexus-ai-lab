@@ -41,6 +41,23 @@ const placeholder=box('avatar loading stand-in',.8,2,.45,0,1,-30,dark);placehold
 let animated=false,avatarReady=false;
 try{const uri='https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models@master/2.0/CesiumMan/glTF-Binary/CesiumMan.glb';const imp=await BABYLON.SceneLoader.ImportMeshAsync('',uri,'',scene);const root=imp.meshes[0];root.parent=player;root.position.set(0,0,0);root.scaling.scaleInPlace(1.5);placeholder.setEnabled(false);avatarReady=true;for(const ag of imp.animationGroups){ag.start(true);animated=true}}catch(e){console.warn('Modèle 3D indisponible :',e);document.getElementById('status').textContent='MODÈLE 3D INDISPONIBLE — MODE DÉGRADÉ'}
 const camera=new BABYLON.ArcRotateCamera('third person',-Math.PI/2,1.35,9,new V(0,2.7,-30),scene);camera.lowerRadiusLimit=6;camera.upperRadiusLimit=20;camera.lowerBetaLimit=.8;camera.upperBetaLimit=1.5;camera.attachControl(canvas,true);camera.wheelDeltaPercentage=.02;camera.panningSensibility=0;
+// Prevent walls, consoles and architectural beams from occluding the player.
+// A Babylon ray from the player toward the desired camera position finds the first
+// opaque architectural obstruction; camera radius contracts until line of sight clears.
+const cameraOccluders=scene.meshes.filter(m=>m.isPickable!==false&&(
+ /research module|structural column|bridge structure|ceiling beam|station 01 sign physical frame|station 01 readable signage|station hologram|core plinth/i.test(m.name)
+));for(const mesh of cameraOccluders)mesh.isPickable=true;
+camera.onAfterCheckInputsObservable.add(()=>{
+ const target=player.position.add(new V(0,2.1,0));
+ const desired=camera.position.subtract(target);
+ const distance=desired.length();
+ if(distance<.1)return;
+ const ray=new BABYLON.Ray(target,desired.scale(1/distance),distance);
+ const hit=scene.pickWithRay(ray,m=>cameraOccluders.includes(m));
+ if(hit&&hit.hit&&hit.distance>0){
+  camera.radius=Math.max(2.8,Math.min(camera.radius,hit.distance-.65));
+ }
+});
 const touchMove={x:0,z:0};const joy=document.getElementById('joystick'),stick=document.getElementById('stick');function moveStick(e){const rect=joy.getBoundingClientRect(),cx=rect.left+rect.width/2,cy=rect.top+rect.height/2,dx=e.clientX-cx,dy=e.clientY-cy,dist=Math.hypot(dx,dy),radius=36,scale=dist>radius?radius/dist:1;const x=dx*scale,y=dy*scale;stick.style.transform=`translate(${x}px,${y}px)`;touchMove.x=x/radius;touchMove.z=-y/radius}joy.addEventListener('pointerdown',e=>{joy.setPointerCapture(e.pointerId);moveStick(e)});joy.addEventListener('pointermove',e=>{if(joy.hasPointerCapture(e.pointerId))moveStick(e)});function stopStick(){touchMove.x=0;touchMove.z=0;stick.style.transform='translate(0,0)'}joy.addEventListener('pointerup',stopStick);joy.addEventListener('pointercancel',stopStick);const keys=new Set();window.addEventListener('keydown',e=>{if(e.target.tagName==='TEXTAREA')return;keys.add(e.key.toLowerCase());if(['arrowup','arrowdown','arrowleft','arrowright',' '].includes(e.key.toLowerCase()))e.preventDefault();if(e.key.toLowerCase()==='e'&&player.position.subtract(new V(12,0,-10)).length()<6)openMission()});window.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));
 const terminal=box('tokenisation research console',3,2,1.4,12,1,-10,steel);terminal.rotation.y=-.35;const screen=box('interactive terminal screen',2.7,1.3,.1,12,2.1,-10,cyan);screen.rotation.y=-.35;const marker=ring('terminal marker',2,.08,12,4.5,-10,amber,Math.PI/2);
 const prompt=document.getElementById('hint'),mission=document.getElementById('mission');function openMission(){mission.style.display='block';document.body.classList.add('inMission');keys.clear();camera.detachControl()}function closeMission(){window.nexusPython.cancel();document.getElementById('run').disabled=false;mission.style.display='none';document.body.classList.remove('inMission');camera.attachControl(canvas,true)}document.getElementById('close').onclick=closeMission;document.getElementById('interactMobile').onclick=()=>{if(player.position.subtract(new V(12,0,-10)).length()<6)openMission()};
