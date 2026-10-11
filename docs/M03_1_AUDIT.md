@@ -12,6 +12,7 @@ Sources examinées : mission, manifest, moteur, UI, runner, Worker, scripts du j
 - La suite initiale valide la mission entière avec un choix de QCM, sans justification libre. Vérifié par exécution du scénario historique.
 - Inspection UTF-8 : le début de `PRODUCTION_AUDIT.md` contient réellement du mojibake (`trouvÃ©`, `PrÃ©sent`), contrairement aux autres documents. Ce n’est pas seulement un affichage du terminal.
 - Chargement pédagogique : pas de timeout ni action de reprise dédiée. Les erreurs Python brutes constituent le feedback principal. Les scripts existants ne testent pas les messages tardifs ni l’envoi Worker qui échoue.
+- Audit clavier complémentaire, `node artifacts/reproduce-keyboard.cjs` : P sur une liste de réponses recharge le jeu en qualité medium et ferme la mission. Reproduit avant ajout de la garde pendant la mission.
 
 ## Acceptation mesurable
 

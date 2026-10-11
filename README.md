@@ -21,6 +21,8 @@ npm run test:browser
 
 Le second groupe exécute Chromium, Babylon et Python Pyodide réels, puis écrit les captures dans `artifacts/`. Il nécessite l'accès aux CDN. `NEXUS_BASE_URL` permet de tester un build dans un sous-répertoire (URL terminée par `/`). Les mesures SwiftShader ne certifient pas les FPS sur Android.
 
-Progrès enregistrés localement par niveau ; aucun nom ni code élève sauvegardé. Les CDN reçoivent les métadonnées réseau habituelles. Le Worker Python est interruptible mais ne constitue pas une sandbox pour code hostile. Connexion nécessaire ; mode hors ligne non livré.
+M03.1 : quatre distinctions scientifiques, prédiction et comparaison blancs/sous-mots simulés/IDs, Python réel, justification libre et grille d'autoévaluation. Le parcours réalisé ne certifie pas la maîtrise : la note doit être relue par un enseignant.
 
-Résultats, commits et captures : [rapport de livraison](docs/PRODUCTION_DELIVERY.md). Décisions et limites : [audit initial](docs/PRODUCTION_AUDIT.md), [architecture pédagogique](docs/LEARNING_ARCHITECTURE.md), [plan de production](docs/ACADEMY_PRODUCTION_BLUEPRINT.md).
+Progrès, dossier et brouillons Python enregistrés localement par niveau ; aucun nom demandé. Les brouillons se restaurent au rechargement et se réinitialisent après confirmation. Stockage non chiffré, sans synchronisation ni garantie de conservation ; copie ton travail avant de vider les données du navigateur. L'application n'envoie pas ton code à un service. Les CDN reçoivent les métadonnées réseau habituelles. Le Worker Python est interruptible mais ne constitue pas une sandbox pour code hostile. Connexion nécessaire ; mode hors ligne non livré.
+
+Résultats, commits et captures : [consolidation M03.1](docs/M03_1_REPORT.md), [livraison initiale](docs/PRODUCTION_DELIVERY.md). [Grille de revue enseignante](docs/M03_TEACHER_REVIEW.md). Décisions et limites : [audit initial](docs/PRODUCTION_AUDIT.md), [architecture pédagogique](docs/LEARNING_ARCHITECTURE.md), [plan de production](docs/ACADEMY_PRODUCTION_BLUEPRINT.md).

@@ -1,5 +1,7 @@
 # Livraison — fondations de production, 11 octobre 2026
 
+> Rapport historique de la livraison M03 initiale. La consolidation M03.1 est décrite dans [son audit](M03_1_AUDIT.md) et l’architecture actualisée ; les limites ci-dessous décrivent l’état initial, pas les nouveaux brouillons et activités.
+
 Branche de travail : `art-direction/atrium-preproduction`. Base : `31a1f85`. Aucun push, déploiement ou merge vers `main` effectué. Cette livraison améliore le prototype ; elle ne certifie pas une version commerciale.
 
 ## Étapes et commits locaux
