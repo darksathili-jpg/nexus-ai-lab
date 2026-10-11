@@ -18,16 +18,15 @@ window.NexusWayfinding={
   ctx.fillStyle='#b3d8e4';ctx.font='40px Arial';ctx.fillText('PYTHON  •  ANALYSE DU TEXTE',60,320);
   ctx.fillStyle='#ffca83';ctx.font='bold 40px Arial';ctx.fillText('APPROCHER + E POUR ENTRER',60,413);
   textTexture.update();
-  // The double-sided plane is viewed from its reverse in the approach corridor.
-  // Mirror U coordinates so lettering is readable from that side.
-  textTexture.uScale=-1;
-  textTexture.uOffset=1;
+  // Keep texture unmirrored; place the plane on the visible +Z face of the frame.
+  textTexture.uScale=1;
+  textTexture.uOffset=0;
   const screen=new B.StandardMaterial('station 01 actual sign',scene);
   screen.diffuseTexture=textTexture;screen.emissiveTexture=textTexture;screen.disableLighting=true;screen.backFaceCulling=false;
   const frame=B.MeshBuilder.CreateBox('station 01 sign physical frame',{width:7.6,height:3.8,depth:.18},scene);
   frame.position.set(12,5,-10);frame.material=metal;
   const panel=B.MeshBuilder.CreatePlane('station 01 readable signage',{width:7.35,height:3.55,sideOrientation:B.Mesh.DOUBLESIDE},scene);
-  panel.position.set(12,5,-10.12);panel.rotation.y=Math.PI;panel.material=screen;
+  panel.position.set(12,5,-9.87);panel.rotation.y=0;panel.material=screen;
   // Highlight only the implemented educational station; no fake clickable labs.
   const beacon=new B.PointLight('station 01 cyan navigation beacon',new V(12,4.5,-10),scene);
   beacon.diffuse=C.FromHexString('#37d5ef');beacon.intensity=22;beacon.range=9;beacon.setEnabled(false); // Emissive sign remains visible without adding a shader light
