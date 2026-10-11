@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NEXUS — Carte de l'Académie LLM</title><style>
+:root{font:16px/1.55 system-ui,Arial,sans-serif;color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#071019;color:#e6f3f8}header{padding:clamp(22px,5vw,58px);background:radial-gradient(ellipse at 75% 20%,#13475b 0%,#0a202d 45%,#071019 80%);border-bottom:1px solid #255265}a{color:#86e2ee}nav{display:flex;gap:16px;align-items:center;flex-wrap:wrap}nav a{border:1px solid #4a8695;padding:8px 14px;text-decoration:none;border-radius:4px}h1{font-size:clamp(28px,5vw,54px);line-height:1.12;max-width:800px;letter-spacing:-.04em;margin:34px 0 14px}header p{max-width:780px;color:#b3c9d5}.eyebrow{color:#8be3e8;letter-spacing:.2em;text-transform:uppercase;font-size:12px;font-weight:700}main{max-width:1250px;margin:auto;padding:28px 20px 70px}.controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0 26px}button{background:#102d3b;border:1px solid #438297;color:#e9f9ff;padding:10px 16px;border-radius:4px;cursor:pointer;font:inherit}button[aria-pressed=true]{background:#b2eff2;color:#08212c;border-color:#b2eff2}#modules{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}article{background:#0c1e2b;border:1px solid #294657;border-radius:7px;padding:22px;min-height:300px}article h2{font-size:20px;margin:12px 0}article p{color:#bcd0dc}article dl{margin:18px 0 0}dt{color:#7fcfdb;font-size:12px;text-transform:uppercase;letter-spacing:.1em}dd{margin:3px 0 13px;color:#d8e6eb}.pill{display:inline-block;border:1px solid #547c8b;border-radius:30px;padding:3px 9px;font-size:11px;color:#c3d7de;margin-right:6px}.partial{border-color:#69cfb4;color:#a6f1d9}footer{max-width:1250px;margin:auto;padding:20px;color:#91aab7;font-size:13px}#error{color:#ffb8a9}details{margin-top:10px}summary{cursor:pointer;color:#b6edf0}*:focus-visible{outline:3px solid #fff;outline-offset:3px}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}</style></head>
+<body><header><nav><a href="./index.html">← Retour au Grand Atrium</a><span class="eyebrow">NEXUS / AI LAB · Référentiel pédagogique</span></nav><h1>Une académie pour comprendre et programmer les LLM.</h1><p>Douze modules structurés pour la Première et la Terminale NSI. Cette carte distingue explicitement les contenus prévus de ceux réellement jouables : elle ne présente pas les modules en projet comme terminés.</p></header>
+<main><p id="count" aria-live="polite">Chargement du parcours…</p><div class="controls" role="group" aria-label="Filtrer les modules"><button data-level="all" aria-pressed="true">Tous les modules</button><button data-level="premiere" aria-pressed="false">Première NSI</button><button data-level="terminale" aria-pressed="false">Terminale NSI</button></div><section id="modules" aria-label="Modules de formation"></section><p id="error" role="alert"></p></main>
+<footer>Un module n'est considéré comme achevé qu'après validation scientifique, tests Python, évaluation pédagogique, tests mobiles et revue de qualité.</footer>
+<script>
+(async()=>{
+ const grid=document.getElementById('modules'),count=document.getElementById('count'),error=document.getElementById('error');
+ try{
+  const response=await fetch('./curriculum/llm-nsi.json',{cache:'no-store'});
+  if(!response.ok)throw Error('Référentiel indisponible : '+response.status);
+  const data=await response.json();
+  let filter='all';
+  const el=(tag,text,cls)=>{const node=document.createElement(tag);node.textContent=text;if(cls)node.className=cls;return node};
+  function render(){
+   grid.replaceChildren();
+   const selected=data.modules.filter(m=>filter==='all'||m.level===filter);
+   count.textContent=selected.length+' modules affichés · '+data.modules.filter(m=>m.implementation==='prototype-partiel').length+' prototype partiel · aucun parcours complet encore livré';
+   for(const m of selected){
+    const card=document.createElement('article');
+    card.append(el('span',m.id,'eyebrow'),el('h2',m.title));
+    card.append(el('span',m.level==='premiere'?'Première NSI':'Terminale NSI','pill'));
+    card.append(el('span',m.implementation==='prototype-partiel'?'Prototype partiel':'À développer','pill'+(m.implementation==='prototype-partiel'?' partial':'')));
+    card.append(el('p',m.objective));
+    const dl=document.createElement('dl');
+    for(const [label,value] of [['Atelier Python',m.pythonLab],['Évaluation',m.assessment],['Vigilance scientifique',m.scientificCaution],['Prérequis',m.prerequisites.join(', ')]]){dl.append(el('dt',label),el('dd',value))}
+    card.append(dl);grid.append(card);
+   }
+  }
+  document.querySelectorAll('[data-level]').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.level;document.querySelectorAll('[data-level]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));render()}));
+  render();
+ }catch(e){count.textContent='Parcours indisponible';error.textContent=String(e)}
+})();
+</script></body></html>
