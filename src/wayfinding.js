@@ -16,7 +16,7 @@ window.NexusWayfinding={
   ctx.fillStyle='#77dce9';ctx.font='600 34px Arial';ctx.fillText('NEXUS  /  RESEARCH STATION',60,100);
   ctx.fillStyle='#ffffff';ctx.font='bold 78px Arial';ctx.fillText('01  TOKENISATION',60,225);
   ctx.fillStyle='#b3d8e4';ctx.font='40px Arial';ctx.fillText('PYTHON  •  ANALYSE DU TEXTE',60,320);
-  ctx.fillStyle='#ffca83';ctx.font='bold 40px Arial';ctx.fillText('APPROCHER + E POUR ENTRER',60,413);
+  ctx.fillStyle='#ffca83';ctx.font='bold 40px Arial';ctx.fillText('APPROCHER POUR INTERAGIR',60,413);
   textTexture.update();
   // Keep texture unmirrored; place the plane on the visible +Z face of the frame.
   textTexture.uScale=1;
