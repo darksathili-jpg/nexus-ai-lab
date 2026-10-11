@@ -27,3 +27,9 @@ Produire un véritable kit d'environnement 3D (GLB et textures PBR sous licence)
 - Les CDN doivent être auto-hébergés et figés avant déploiement scolaire robuste.
 - Les tests navigateur, accessibilité et performance n'ont pas été exécutés ici.
 - Le développement artistique et la création des assets GLB/PBR restent le blocage principal de conformité.
+
+## V0.3 — Passe de détails architecturaux
+- `src/atrium-detail.js` ajoute des objets **réellement modélisés en 3D** : colonnes cannelées, corniches, balustres, luminaires, jardinières, végétation volumétrique, marches et bandes lumineuses.
+- Les matériaux PBR sont paramétrés, mais **les modèles artistiques GLB et textures raster haut de gamme restent absents**.
+- Cette passe augmente fortement le nombre de maillages et peut dégrader les performances : mesurer les FPS et regrouper les maillages statiques avant publication.
+- Aucun test navigateur ou comparatif visuel n'a encore été exécuté ; l'exigence de ressemblance avec le concept art n'est pas validée.
