@@ -27,4 +27,6 @@ for(const step of NexusMissionEngine.steps)engine.mark('M03','premiere',step);
 assert.equal(engine.status('M04','premiere'),'available');
 assert.throws(()=>NexusMissionEngine.create(curriculum,[{...mission,moduleDependencies:['M04']},next],storage),/Cycle/);
 assert.equal(NexusMissionEngine.create(curriculum,[mission],{getItem:()=>'{bad',setItem(){}}).status('M03','premiere'),'available');
+engine=NexusMissionEngine.create(curriculum,[mission],{getItem:()=>JSON.stringify({version:2,records:{'M03:premiere':{version:1,steps:['tester','transferer'],attempts:'bad'}}}),setItem(){}});
+assert.equal(engine.status('M03','premiere'),'available');assert.equal(engine.record('M03','premiere').attempts,0);
 console.log('MISSION ENGINE PASS: order, persistence, levels, versions, storage failures, locks, cycles');

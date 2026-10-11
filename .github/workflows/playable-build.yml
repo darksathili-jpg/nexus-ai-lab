@@ -7,6 +7,8 @@ on:
     paths:
       - 'index.html'
       - 'src/**'
+      - 'tests/**'
+      - 'package*.json'
       - 'academy.html'
       - 'curriculum/**'
       - 'public/**'
@@ -29,12 +31,23 @@ jobs:
           python -m pip install 'trimesh==4.8.3' 'numpy==2.3.3'
           python tools/build_reactor.py
           test -s public/assets/nexus-core-sculpture.glb
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run blocking tests before packaging or deployment
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          python -m http.server 8765 --bind 127.0.0.1 > /tmp/nexus-http.log 2>&1 &
+          npm test
+          npm run test:browser
       - name: Assemble playable website
         run: |
-          mkdir -p _playable/src _playable/public/assets _playable/curriculum
+          mkdir -p _playable/src _playable/public/assets _playable/curriculum/missions
           cp index.html _playable/
           cp academy.html _playable/
           cp curriculum/*.json _playable/curriculum/
+          cp curriculum/missions/*.json _playable/curriculum/missions/
           cp src/*.js _playable/src/
           cp public/assets/nexus-core-sculpture.glb _playable/public/assets/
           test -s _playable/index.html

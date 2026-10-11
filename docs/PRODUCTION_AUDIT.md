@@ -31,6 +31,6 @@ PrÃ©vu : douze sÃ©quences complÃ¨tes, moteur de missions/prÃ©requis, pro
 
 PrÃ©server scÃ¨ne, assets et commandes ; extraire progressivement mission/contenu/Ã©valuation. Garder M03 `prototype-partiel` jusqu'Ã  revue scientifique et test Ã©lÃ¨ve. Bloquer publication sur gates et documenter toute preuve navigateur indisponible. Les tests automatiques ne certifient ni l'art, ni la sÃ©curitÃ© du code Python, ni la performance mobile rÃ©elle.
 
-## Reprise navigateur apr?s installation
+## Reprise navigateur après installation
 
-Playwright 1.56.1 et Chromium 1194 install?s ; serveur Python local sur 8765. `quality-gate` et `atrium-browser` passent : 734 maillages, GLB et texture du sol pr?sents, aucun error collect?, captures desktop 1440?900 et mobile 390?844 dans artifacts/. Mesure logicielle SwiftShader : 3 FPS au relev?, pas une mesure Android. Regex FPS corrig?e.
+Playwright 1.56.1 et Chromium 1194 installés ; serveur Python local sur 8765. `quality-gate` et `atrium-browser` passent : 734 maillages, GLB et texture du sol présents, aucune erreur collectée, captures desktop 1440×900 et mobile 390×844 dans artifacts/. Mesure logicielle SwiftShader : 3 FPS au relevé, pas une mesure Android. Regex FPS corrigée.

@@ -7,7 +7,7 @@ const assert=require('node:assert/strict');
  const failures=[];
  page.on('pageerror',e=>failures.push(String(e)));
  try{
-  await page.goto('http://127.0.0.1:8765/?quality=low',{waitUntil:'domcontentloaded'});
+  await page.goto((process.env.NEXUS_BASE_URL||'http://127.0.0.1:8765/')+'?quality=low',{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>!document.querySelector('#loading')||getComputedStyle(document.querySelector('#loading')).opacity==='0',{timeout:40000});
   await page.waitForFunction(()=>!!window.BABYLON?.Engine?.LastCreatedEngine?.scenes?.[0]?.getMeshByName('station 01 reverse face panel'),{timeout:15000});
   const scene=await page.evaluate(()=>{
@@ -18,6 +18,19 @@ const assert=require('node:assert/strict');
     facingOpposite:Math.abs(Math.abs(front?.rotation.y-rear?.rotation.y)-Math.PI)<.01};
   });
   assert.deepEqual(scene,{front:true,rear:true,differentMaterials:true,frontCull:true,rearCull:true,facingOpposite:true},'Station sign must have separate single-sided opposite faces');
+  const before=await page.evaluate(()=>window.BABYLON.Engine.LastCreatedEngine.scenes[0].getTransformNodeByName('player').position.asArray());
+  const joystick=await page.locator('#joystick').boundingBox();
+  await page.dispatchEvent('#joystick','pointerdown',{pointerId:1,clientX:joystick.x+joystick.width/2,clientY:joystick.y+10,pointerType:'touch'});
+  await page.waitForTimeout(600);
+  await page.dispatchEvent('#joystick','pointerup',{pointerId:1,pointerType:'touch'});
+  const after=await page.evaluate(()=>window.BABYLON.Engine.LastCreatedEngine.scenes[0].getTransformNodeByName('player').position.asArray());
+  assert(Math.hypot(after[0]-before[0],after[2]-before[2])>.1,'Touch joystick must move the player');
+  await page.evaluate(()=>window.BABYLON.Engine.LastCreatedEngine.scenes[0].getTransformNodeByName('player').position.set(12,0,-14));
+  await page.waitForFunction(()=>!document.getElementById('interactMobile').disabled);
+  await page.click('#interactMobile');
+  assert(await page.locator('#mission').isVisible(),'Mobile interaction opens the learning station');
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#mission').isVisible(),false,'Escape returns to game');
   await page.evaluate(()=>{document.getElementById('reward').style.display='block'});
   const toast=await page.locator('#reward').boundingBox();
   const viewport=page.viewportSize();
@@ -29,7 +42,7 @@ const assert=require('node:assert/strict');
   assert(mission.y>=0&&mission.y+mission.height<=viewport.height+1,'Mission must fit mobile viewport vertically');
   assert(await page.locator('#run').isVisible(),'Python validation action must be visible');
   assert(await page.locator('#close').isVisible(),'Mission exit must be visible');
-  console.log('QUALITY GATE PASS: sign front/rear, mobile reward, mission viewport, controls');
+  console.log('QUALITY GATE PASS: sign front/rear, touch movement and interaction, Escape, mobile reward, mission viewport, controls');
  }finally{await browser.close()}
  assert.equal(failures.length,0,'Browser runtime errors: '+failures.slice(0,5).join(' | '));
 })().catch(e=>{console.error('QUALITY GATE FAILED:',e);process.exitCode=1});

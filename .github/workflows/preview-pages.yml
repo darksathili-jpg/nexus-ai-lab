@@ -7,6 +7,8 @@ on:
     paths:
       - 'index.html'
       - 'src/**'
+      - 'tests/**'
+      - 'package*.json'
       - 'academy.html'
       - 'curriculum/**'
       - 'public/**'
@@ -40,15 +42,26 @@ jobs:
           python -m pip install 'trimesh==4.8.3' 'numpy==2.3.3'
           python tools/build_reactor.py
           test -s public/assets/nexus-core-sculpture.glb
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run blocking tests before packaging or deployment
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          python -m http.server 8765 --bind 127.0.0.1 > /tmp/nexus-http.log 2>&1 &
+          npm test
+          npm run test:browser
       - name: Assemble isolated static preview
         run: |
-          mkdir -p _preview/src _preview/public/assets _preview/curriculum
+          mkdir -p _preview/src _preview/public/assets _preview/curriculum/missions
           cp index.html _preview/index.html
           cp academy.html _preview/
           cp curriculum/*.json _preview/curriculum/
+          cp curriculum/missions/*.json _preview/curriculum/missions/
           cp src/*.js _preview/src/
           cp public/assets/nexus-core-sculpture.glb _preview/public/assets/
-          printf 'NEXUS preview â€” experimental branch; not a production release.\n' > _preview/PREVIEW.txt
+          printf 'NEXUS preview - experimental branch; not a production release.\n' > _preview/PREVIEW.txt
           test -s _preview/index.html
       - name: Archive playable preview independently of Pages
         uses: actions/upload-artifact@v4

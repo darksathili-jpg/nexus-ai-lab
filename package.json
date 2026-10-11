@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "node tests/collision.cjs && node tests/collision-gate.cjs && node tests/curriculum-gate.cjs",
-    "test:browser": "node tests/quality-gate.cjs && node tests/atrium-browser.cjs"
+    "test": "node tests/syntax.cjs && node tests/collision.cjs && node tests/collision-gate.cjs && node tests/curriculum-gate.cjs && node tests/mission-engine.cjs",
+    "test:browser": "node tests/quality-gate.cjs && node tests/atrium-browser.cjs && node tests/learning-browser.cjs"
   },
   "devDependencies": {
     "playwright": "1.56.1"

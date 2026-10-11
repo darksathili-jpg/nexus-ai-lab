@@ -3,7 +3,7 @@
  const steps=['comprendre','experimenter','programmer','tester','transferer'];
  function create(curriculum,definitions,storage){
   const key='nexus.progress.v2';let state={};let persistent=true;
-  try{const saved=JSON.parse(storage.getItem(key)||'{}');if(saved.version===2&&saved.records&&typeof saved.records==='object')state=saved.records}catch(e){persistent=false}
+  try{const saved=JSON.parse(storage.getItem(key)||'{}');if(saved?.version===2&&saved.records&&typeof saved.records==='object'&&!Array.isArray(saved.records))state=saved.records}catch(e){persistent=false}
   const defs=new Map(definitions.map(d=>[d.id,d]));
   const modules=new Map(curriculum.modules.map(m=>[m.id,m]));
   for(const d of definitions){
@@ -17,6 +17,10 @@
    const d=defs.get(id);if(!d||!d.levels[level])throw Error('Mission ou niveau indisponible');
    const k=id+':'+level,r=state[k];
    if(!r||r.version!==d.version||!Array.isArray(r.steps))state[k]={version:d.version,steps:[],attempts:0};
+   const current=state[k];let count=0;
+   while(count<steps.length&&current.steps.includes(steps[count]))count++;
+   current.steps=steps.slice(0,count);
+   current.attempts=Number.isSafeInteger(current.attempts)&&current.attempts>=0?current.attempts:0;
    return state[k];
   }
   function status(id,level){

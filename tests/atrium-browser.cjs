@@ -8,7 +8,7 @@ const crypto = require('node:crypto');
  const errors=[];
  page.on('pageerror',e=>errors.push(String(e)));
  page.on('console',msg=>{if(msg.type()==='error')errors.push(msg.text())});
- await page.goto('http://127.0.0.1:8765/?quality=low',{waitUntil:'domcontentloaded'});
+ await page.goto((process.env.NEXUS_BASE_URL||'http://127.0.0.1:8765/')+'?quality=low',{waitUntil:'domcontentloaded'});
  await page.waitForTimeout(18000);
  await page.waitForFunction(()=>['glb','fallback'].includes(document.body.dataset.reactor),{timeout:10000}).catch(()=>{});
  fs.mkdirSync('artifacts',{recursive:true});
