@@ -22,11 +22,25 @@ window.NexusWayfinding={
   textTexture.uScale=1;
   textTexture.uOffset=0;
   const screen=new B.StandardMaterial('station 01 actual sign',scene);
-  screen.diffuseTexture=textTexture;screen.emissiveTexture=textTexture;screen.disableLighting=true;screen.backFaceCulling=false;
+  screen.diffuseTexture=textTexture;screen.emissiveTexture=textTexture;screen.disableLighting=true;screen.backFaceCulling=true;
   const frame=B.MeshBuilder.CreateBox('station 01 sign physical frame',{width:7.6,height:3.8,depth:.18},scene);
   frame.position.set(12,5,-10);frame.material=metal;
-  const panel=B.MeshBuilder.CreatePlane('station 01 readable signage',{width:7.35,height:3.55,sideOrientation:B.Mesh.DOUBLESIDE},scene);
+  const panel=B.MeshBuilder.CreatePlane('station 01 readable signage',{width:7.35,height:3.55,sideOrientation:B.Mesh.FRONTSIDE},scene);
   panel.position.set(12,5,-9.87);panel.rotation.y=0;panel.material=screen;
+  // Independent reverse graphic: the front texture must never be visible mirrored.
+  const reverseTexture=new B.DynamicTexture('station 01 reverse identity',{width:1024,height:512},scene,false);
+  const rc=reverseTexture.getContext();
+  rc.fillStyle='#071624';rc.fillRect(0,0,1024,512);
+  rc.strokeStyle='#39c8de';rc.lineWidth=5;rc.strokeRect(18,18,988,476);
+  rc.textAlign='center';rc.fillStyle='#e6f7ff';rc.font='bold 72px Arial';
+  rc.fillText('NEXUS / AI LAB',512,225);
+  rc.fillStyle='#84dce8';rc.font='38px Arial';rc.fillText('STATION 01  /  PYTHON',512,325);
+  reverseTexture.update();
+  const reverseMaterial=new B.StandardMaterial('station 01 reverse face',scene);
+  reverseMaterial.diffuseTexture=reverseTexture;reverseMaterial.emissiveTexture=reverseTexture;
+  reverseMaterial.disableLighting=true;reverseMaterial.backFaceCulling=true;
+  const reversePanel=B.MeshBuilder.CreatePlane('station 01 reverse face panel',{width:7.35,height:3.55,sideOrientation:B.Mesh.FRONTSIDE},scene);
+  reversePanel.position.set(12,5,-10.13);reversePanel.rotation.y=Math.PI;reversePanel.material=reverseMaterial;
   // Highlight only the implemented educational station; no fake clickable labs.
   const beacon=new B.PointLight('station 01 cyan navigation beacon',new V(12,4.5,-10),scene);
   beacon.diffuse=C.FromHexString('#37d5ef');beacon.intensity=22;beacon.range=9;beacon.setEnabled(false); // Emissive sign remains visible without adding a shader light
