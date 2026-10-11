@@ -16,6 +16,7 @@ jobs:
         run: |
           node --check src/atrium-detail.js
           node --check src/performance.js
+          node --check src/surface-detail.js
           node --check src/python-runner.js
           node --check src/python-worker.js
       - name: Check essential assets
