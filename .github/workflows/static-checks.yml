@@ -1,0 +1,40 @@
+name: NEXUS static checks
+on:
+  push:
+    branches: [main, art-direction/atrium-preproduction]
+  pull_request:
+    branches: [main]
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: |
+          node --check src/atrium-detail.js
+          node --check src/performance.js
+          node --check src/surface-detail.js
+          node --check src/wayfinding.js
+          node --check src/collision.js
+          node --check tests/collision.cjs
+          node tests/collision.cjs
+          node --check tests/collision-gate.cjs
+          node tests/collision-gate.cjs
+          node --check tests/curriculum-gate.cjs
+          node tests/curriculum-gate.cjs
+          node --check src/python-runner.js
+          node --check src/python-worker.js
+      - name: Check essential assets
+        run: |
+          test -f index.html
+          test -f docs/ART_DIRECTION.md
+          test -f docs/ASSET_CREDITS.md
+          test -f docs/ACADEMY_PRODUCTION_BLUEPRINT.md
+          test -f curriculum/llm-nsi.json
+          test -f academy.html
+          grep -q 'curriculum/llm-nsi.json' academy.html
+          grep -q 'NexusEnvironment.enhance' index.html
+          grep -q 'nexusPython.run' index.html
