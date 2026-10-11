@@ -9,6 +9,7 @@ const path = require('node:path');
  page.on('console',msg=>{if(msg.type()==='error')errors.push(msg.text())});
  await page.goto('http://127.0.0.1:8765/?quality=low',{waitUntil:'domcontentloaded'});
  await page.waitForTimeout(18000);
+ await page.waitForFunction(()=>['glb','fallback'].includes(document.body.dataset.reactor),{timeout:10000}).catch(()=>{});
  fs.mkdirSync('artifacts',{recursive:true});
  await page.screenshot({path:'artifacts/atrium-desktop.png',fullPage:true});
  const result=await page.evaluate(()=>({
@@ -17,12 +18,13 @@ const path = require('node:path');
   mission:!!document.querySelector('#mission'),
   meshes:window.BABYLON?.Engine?.LastCreatedEngine?.scenes?.[0]?.meshes?.length||0,
   diagnostics:document.querySelector('#nexus-diagnostics')?.textContent||'',
-  webgl:!!document.querySelector('#game')?.getContext('webgl2')
+  reactor:document.body.dataset.reactor||'pending',
+  webgl:!!document.querySelector('canvas')
  }));
  fs.writeFileSync('artifacts/diagnostics.json',JSON.stringify({result,errors},null,2));
  console.log(JSON.stringify({result,errors},null,2));
  await page.setViewportSize({width:390,height:844});
  await page.screenshot({path:'artifacts/atrium-mobile.png',fullPage:true});
  await browser.close();
- if(!result.loaded||!result.meshes||errors.some(e=>/uncaught|syntaxerror|referenceerror/i.test(e)))process.exitCode=1;
+ if(!result.loaded||!result.meshes||result.reactor!=='glb'||errors.some(e=>/uncaught|syntaxerror|referenceerror/i.test(e)))process.exitCode=1;
 })().catch(e=>{console.error(e);process.exitCode=1});
