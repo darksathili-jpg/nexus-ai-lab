@@ -1,0 +1,43 @@
+name: Build real GLB assets
+on:
+  workflow_dispatch:
+  push:
+    branches: [art-direction/atrium-preproduction]
+    paths:
+      - 'tools/build_reactor.py'
+      - '.github/workflows/build-assets.yml'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install geometry dependencies
+        run: python -m pip install 'trimesh==4.8.3' 'numpy==2.3.3'
+      - name: Generate GLB
+        run: python tools/build_reactor.py
+      - name: Verify GLB integrity
+        run: |
+          python - <<'PY'
+          import trimesh
+          s=trimesh.load('public/assets/nexus-core-sculpture.glb',force='scene')
+          assert len(s.geometry)>100, 'Missing sculptural geometry'
+          print('GLB verified:',len(s.geometry),'geometry objects')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nexus-reactor-glb
+          path: public/assets/nexus-core-sculpture.glb
+      - name: Commit generated binary asset to working branch
+        if: github.ref == 'refs/heads/art-direction/atrium-preproduction'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/assets/nexus-core-sculpture.glb
+          git diff --cached --quiet || (git commit -m "assets: generate actual reactor GLB" && git push)
