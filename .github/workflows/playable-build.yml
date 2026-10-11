@@ -1,0 +1,42 @@
+name: NEXUS playable build
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - art-direction/atrium-preproduction
+    paths:
+      - 'index.html'
+      - 'src/**'
+      - 'public/**'
+      - 'tools/build_reactor.py'
+      - '.github/workflows/playable-build.yml'
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate 3D GLB
+        run: |
+          python -m pip install 'trimesh==4.8.3' 'numpy==2.3.3'
+          python tools/build_reactor.py
+          test -s public/assets/nexus-core-sculpture.glb
+      - name: Assemble playable website
+        run: |
+          mkdir -p _playable/src _playable/public/assets
+          cp index.html _playable/
+          cp src/*.js _playable/src/
+          cp public/assets/nexus-core-sculpture.glb _playable/public/assets/
+          test -s _playable/index.html
+      - name: Upload playable build
+        uses: actions/upload-artifact@v4
+        with:
+          name: nexus-playable-preview
+          path: _playable/
+          if-no-files-found: error
+          retention-days: 14
