@@ -6,7 +6,7 @@ window.NexusCollision={
  create(){
   const blocks=[
    // Station 01 console and pedestal, with margin for the player's body.
-   {x:12,z:-10,hx:2.2,hz:1.6},
+   {x:12,z:-10,hx:1.55,hz:.78,angle:-.35},
    // Research bays at both sides of the atrium.
    ...[-1,1].flatMap(s=>Array.from({length:5},(_,i)=>({x:s*30,z:-26+i*13,hx:3.2,hz:3.7})))
   ];
@@ -20,7 +20,9 @@ window.NexusCollision={
   function blocked(x,z){
    if(x < -20+radius||x > 20-radius||z < -34+radius||z > 34-radius)return true;
    for(const o of blocks){
-    const dx=Math.max(Math.abs(x-o.x)-o.hx,0),dz=Math.max(Math.abs(z-o.z)-o.hz,0);
+    const angle=o.angle||0,co=Math.cos(angle),si=Math.sin(angle),rx=x-o.x,rz=z-o.z;
+    const localX=rx*co-rz*si,localZ=rx*si+rz*co;
+    const dx=Math.max(Math.abs(localX)-o.hx,0),dz=Math.max(Math.abs(localZ)-o.hz,0);
     if(dx*dx+dz*dz<radius*radius)return true;
    }
    for(const o of circles)if((x-o.x)**2+(z-o.z)**2<(o.r+radius)**2)return true;
