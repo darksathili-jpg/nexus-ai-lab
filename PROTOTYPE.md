@@ -47,3 +47,9 @@ Produire un véritable kit d'environnement 3D (GLB et textures PBR sous licence)
 - Chargeur `src/asset-loader.js` intégré : utilise le GLB lorsqu'il est présent ; conserve explicitement le réacteur provisoire sinon.
 - **Attention** : le workflow GitHub Actions n'a pas encore été observé en succès, et la présence du binaire sur la branche n'est pas confirmée. Le rendu n'est pas validé visuellement.
 - Le GLB est un composant de sculpture, pas un décor architectural photoréaliste complet : la conformité à la référence reste refusée.
+
+## V0.6 — Premier gate réel réussi et optimisation
+- GitHub Actions : génération GLB, contrôles statiques et rendu Chromium **réussis** sur le commit 106c5cd9.
+- Le rendu automatisé rapporte `reactor: glb`, 1842 maillages et aucune erreur JavaScript. Cela ne mesure ni la qualité artistique ni les FPS sur matériel du lycée.
+- Nouvelle optimisation : fusion des maillages statiques architecturaux par matériau PBR dans `src/atrium-detail.js`. **Cette optimisation n'est pas encore validée par un nouveau rendu Chromium.**
+- Le fichier GLB (316 440 octets) a été produit, et l'étape de publication du workflow a réussi ; l'API de lecture texte GitHub ne peut pas décoder le contenu binaire, ce qui ne constitue pas une absence de fichier.
