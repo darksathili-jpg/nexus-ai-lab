@@ -26,7 +26,7 @@ window.NexusWayfinding={
   panel.position.set(12,5,-10.12);panel.rotation.y=Math.PI;panel.material=screen;
   // Highlight only the implemented educational station; no fake clickable labs.
   const beacon=new B.PointLight('station 01 cyan navigation beacon',new V(12,4.5,-10),scene);
-  beacon.diffuse=C.FromHexString('#37d5ef');beacon.intensity=22;beacon.range=9;
+  beacon.diffuse=C.FromHexString('#37d5ef');beacon.intensity=22;beacon.range=9;beacon.setEnabled(false); // Emissive sign remains visible without adding a shader light
   return {signs:1,implementedMissions:1};
  }
 };
