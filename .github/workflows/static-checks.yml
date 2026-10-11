@@ -21,6 +21,10 @@ jobs:
           node --check src/collision.js
           node --check tests/collision.cjs
           node tests/collision.cjs
+          node --check tests/collision-gate.cjs
+          node tests/collision-gate.cjs
+          node --check tests/curriculum-gate.cjs
+          node tests/curriculum-gate.cjs
           node --check src/python-runner.js
           node --check src/python-worker.js
       - name: Check essential assets
@@ -28,5 +32,7 @@ jobs:
           test -f index.html
           test -f docs/ART_DIRECTION.md
           test -f docs/ASSET_CREDITS.md
+          test -f docs/ACADEMY_PRODUCTION_BLUEPRINT.md
+          test -f curriculum/llm-nsi.json
           grep -q 'NexusEnvironment.enhance' index.html
           grep -q 'nexusPython.run' index.html
