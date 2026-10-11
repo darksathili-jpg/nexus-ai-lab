@@ -1,0 +1,291 @@
+{
+  "schemaVersion": 1,
+  "title": "NEXUS / AI LAB — Académie LLM pour la NSI",
+  "locale": "fr-FR",
+  "curriculumStatus": "design-approved-for-review-not-implemented",
+  "audiences": [
+    "premiere",
+    "terminale"
+  ],
+  "pedagogy": {
+    "sequence": [
+      "comprendre",
+      "experimenter",
+      "programmer",
+      "tester",
+      "transferer"
+    ],
+    "rule": "Toute mission doit fournir une explication scientifique, une expérience manipulable, un exercice Python, des tests et une situation de transfert.",
+    "privacy": "Aucun nom, code ou réponse d'élève transmis à un service externe sans décision explicite et information appropriée."
+  },
+  "modules": [
+    {
+      "id": "M01",
+      "slug": "fondations",
+      "title": "Fondations de l'IA et des LLM",
+      "level": "premiere",
+      "prerequisites": [
+        "algorithmique",
+        "fonctions"
+      ],
+      "objective": "Expliquer la différence entre programme déterministe, apprentissage et inférence.",
+      "pythonLab": "Comparer règles explicites et classifieur simple.",
+      "assessment": "Classer des exemples et justifier les limites.",
+      "scientificCaution": "distinguer modèle et algorithme",
+      "learningLoop": [
+        "comprendre",
+        "experimenter",
+        "programmer",
+        "tester",
+        "transferer"
+      ],
+      "implementation": "a-developper"
+    },
+    {
+      "id": "M02",
+      "slug": "corpus",
+      "title": "Corpus, qualité et biais des données",
+      "level": "premiere",
+      "prerequisites": [
+        "listes",
+        "dictionnaires",
+        "fichiers"
+      ],
+      "objective": "Construire un corpus nettoyé, documenter sa provenance et identifier ses biais.",
+      "pythonLab": "Nettoyer, compter et partitionner un mini-corpus.",
+      "assessment": "Détecter les doublons et les fuites train/test.",
+      "scientificCaution": "qualité des données et généralisation",
+      "learningLoop": [
+        "comprendre",
+        "experimenter",
+        "programmer",
+        "tester",
+        "transferer"
+      ],
+      "implementation": "a-developper"
+    },
+    {
+      "id": "M03",
+      "slug": "tokenisation",
+      "title": "Tokenisation et vocabulaire",
+      "level": "premiere",
+      "prerequisites": [
+        "chaînes",
+        "fonctions",
+        "listes"
+      ],
+      "objective": "Distinguer découpage par espaces, sous-mots et identifiants numériques.",
+      "pythonLab": "Implémenter un tokenizer par mots puis encoder/décoder un vocabulaire.",
+      "assessment": "Tester ponctuation, accents, mots inconnus et espaces multiples.",
+      "scientificCaution": "split n'est pas un tokenizer LLM",
+      "learningLoop": [
+        "comprendre",
+        "experimenter",
+        "programmer",
+        "tester",
+        "transferer"
+      ],
+      "implementation": "prototype-partiel"
+    },
+    {
+      "id": "M04",
+      "slug": "vecteurs",
+      "title": "Vecteurs, embeddings et similarité",
+      "level": "terminale",
+      "prerequisites": [
+        "listes",
+        "fonctions"
+      ],
+      "objective": "Interpréter une représentation vectorielle et calculer une similarité.",
+      "pythonLab": "Calculer produit scalaire et cosinus avec Python pur.",
+      "assessment": "Comparer plusieurs vecteurs et expliquer une erreur de voisinage.",
+      "scientificCaution": "similarité ne signifie pas vérité",
+      "learningLoop": [
+        "comprendre",
+        "experimenter",
+        "programmer",
+        "tester",
+        "transferer"
+      ],
+      "implementation": "a-developper"
+    },
+    {
+      "id": "M05",
+      "slug": "neurones",
+      "title": "Neurones artificiels et fonctions d'activation",
+      "level": "terminale",
+      "prerequisites": [
+        "fonctions",
+        "listes"
+      ],
+      "objective": "Calculer une combinaison pondérée et comprendre le rôle d'une activation.",
+      "pythonLab": "Programmer un neurone et une couche dense simplifiée.",
+      "assessment": "Faire varier poids et biais, interpréter les sorties.",
+      "scientificCaution": "modèle simplifié non équivalent à un LLM",
+      "learningLoop": [
+        "comprendre",
+        "experimenter",
+        "programmer",
+        "tester",
+        "transferer"
+      ],
+      "implementation": "a-developper"
+    },
+    {
+      "id": "M06",
+      "slug": "attention",
+      "title": "Mécanisme d'attention",
+      "level": "terminale",
+      "prerequisites": [
+        "matrices guidées",
+        "fonctions"
+      ],
+      "objective": "Expliquer requêtes, clés, valeurs et normalisation softmax.",
+      "pythonLab": "Calculer une attention sur trois tokens.",
+      "assessment": "Comparer les poids avant/après modification d'un score.",
+      "scientificCaution": "attention n'est pas explication causale",
+      "learningLoop": [
+        "comprendre",
+        "experimenter",
+        "programmer",
+        "tester",
+        "transferer"
+      ],
+      "implementation": "a-developper"
+    },
+    {
+      "id": "M07",
+      "slug": "transformers",
+      "title": "Architecture Transformer",
+      "level": "terminale",
+      "prerequisites": [
+        "composition de fonctions",
+        "structures"
+      ],
+      "objective": "Relier embeddings, position, attention et couches de transformation.",
+      "pythonLab": "Assembler une mini-chaîne de calcul pédagogique.",
+      "assessment": "Tracer les dimensions et flux d'information.",
+      "scientificCaution": "mini-modèle n'est pas un transformer industriel",
+      "learningLoop": [
+        "comprendre",
+        "experimenter",
+        "programmer",
+        "tester",
+        "transferer"
+      ],
+      "implementation": "a-developper"
+    },
+    {
+      "id": "M08",
+      "slug": "entrainement",
+      "title": "Entraînement, perte et généralisation",
+      "level": "terminale",
+      "prerequisites": [
+        "boucles",
+        "fonctions"
+      ],
+      "objective": "Distinguer entraînement et inférence, mesurer une perte.",
+      "pythonLab": "Ajuster un paramètre par recherche ou gradient guidé.",
+      "assessment": "Comparer erreur entraînement et validation.",
+      "scientificCaution": "surapprentissage et fuite de données",
+      "learningLoop": [
+        "comprendre",
+        "experimenter",
+        "programmer",
+        "tester",
+        "transferer"
+      ],
+      "implementation": "a-developper"
+    },
+    {
+      "id": "M09",
+      "slug": "generation",
+      "title": "Prédiction et génération de texte",
+      "level": "premiere",
+      "prerequisites": [
+        "dictionnaires",
+        "probabilités guidées"
+      ],
+      "objective": "Expliquer distribution du prochain token et échantillonnage.",
+      "pythonLab": "Créer un générateur de Markov et tester température/top-k.",
+      "assessment": "Comparer diversité et répétition sur une graine fixe.",
+      "scientificCaution": "génération plausible n'est pas connaissance garantie",
+      "learningLoop": [
+        "comprendre",
+        "experimenter",
+        "programmer",
+        "tester",
+        "transferer"
+      ],
+      "implementation": "a-developper"
+    },
+    {
+      "id": "M10",
+      "slug": "prompting",
+      "title": "Prompting, contexte et outils",
+      "level": "premiere",
+      "prerequisites": [
+        "tests",
+        "fonctions"
+      ],
+      "objective": "Formuler une tâche, tester ses limites et comprendre la fenêtre de contexte.",
+      "pythonLab": "Concevoir un protocole de comparaison de prompts.",
+      "assessment": "Tester robustesse et variations sur plusieurs cas.",
+      "scientificCaution": "prompting ne garantit pas exactitude",
+      "learningLoop": [
+        "comprendre",
+        "experimenter",
+        "programmer",
+        "tester",
+        "transferer"
+      ],
+      "implementation": "a-developper"
+    },
+    {
+      "id": "M11",
+      "slug": "rag",
+      "title": "Recherche documentaire et RAG",
+      "level": "terminale",
+      "prerequisites": [
+        "dictionnaires",
+        "recherche",
+        "fichiers"
+      ],
+      "objective": "Distinguer récupération de documents et génération.",
+      "pythonLab": "Construire une recherche locale et citer les extraits utilisés.",
+      "assessment": "Mesurer précision de récupération et réponses non étayées.",
+      "scientificCaution": "RAG n'élimine pas les hallucinations",
+      "learningLoop": [
+        "comprendre",
+        "experimenter",
+        "programmer",
+        "tester",
+        "transferer"
+      ],
+      "implementation": "a-developper"
+    },
+    {
+      "id": "M12",
+      "slug": "fiabilite",
+      "title": "Évaluation, sécurité et projet final",
+      "level": "terminale",
+      "prerequisites": [
+        "tests",
+        "projet",
+        "bases de données"
+      ],
+      "objective": "Évaluer rigoureusement un système LLM et ses impacts.",
+      "pythonLab": "Construire un banc de tests et présenter un mini-assistant documentaire.",
+      "assessment": "Mesurer taux de réussite, limites, biais et traçabilité.",
+      "scientificCaution": "ne jamais confondre score et garantie",
+      "learningLoop": [
+        "comprendre",
+        "experimenter",
+        "programmer",
+        "tester",
+        "transferer"
+      ],
+      "implementation": "a-developper"
+    }
+  ]
+}
