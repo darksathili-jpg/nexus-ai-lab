@@ -1,0 +1,32 @@
+/* NEXUS — legible, physical station wayfinding in the Babylon scene. */
+window.NexusWayfinding={
+ install(scene,B){
+  const V=B.Vector3,C=B.Color3;
+  const surface=new B.StandardMaterial('station hologram substrate',scene);
+  surface.diffuseColor=new C(.015,.07,.105);surface.emissiveColor=new C(.015,.13,.18);
+  surface.alpha=.92;surface.backFaceCulling=false;
+  const metal=new B.PBRMaterial('wayfinding brushed metal',scene);
+  metal.albedoColor=C.FromHexString('#647988');metal.metallic=.8;metal.roughness=.29;
+  const textTexture=new B.DynamicTexture('station 01 typography',{width:1024,height:512},scene,false);
+  textTexture.hasAlpha=true;
+  const ctx=textTexture.getContext();
+  ctx.clearRect(0,0,1024,512);
+  ctx.fillStyle='rgba(5,19,33,.94)';ctx.fillRect(12,12,1000,488);
+  ctx.strokeStyle='#3ac8df';ctx.lineWidth=5;ctx.strokeRect(17,17,990,478);
+  ctx.fillStyle='#77dce9';ctx.font='600 34px Arial';ctx.fillText('NEXUS  /  RESEARCH STATION',60,100);
+  ctx.fillStyle='#ffffff';ctx.font='bold 78px Arial';ctx.fillText('01  TOKENISATION',60,225);
+  ctx.fillStyle='#b3d8e4';ctx.font='40px Arial';ctx.fillText('PYTHON  •  ANALYSE DU TEXTE',60,320);
+  ctx.fillStyle='#ffca83';ctx.font='bold 40px Arial';ctx.fillText('APPROCHER + E POUR ENTRER',60,413);
+  textTexture.update();
+  const screen=new B.StandardMaterial('station 01 actual sign',scene);
+  screen.diffuseTexture=textTexture;screen.emissiveTexture=textTexture;screen.disableLighting=true;screen.backFaceCulling=false;
+  const frame=B.MeshBuilder.CreateBox('station 01 sign physical frame',{width:7.6,height:3.8,depth:.18},scene);
+  frame.position.set(12,5,-10);frame.material=metal;
+  const panel=B.MeshBuilder.CreatePlane('station 01 readable signage',{width:7.35,height:3.55,sideOrientation:B.Mesh.DOUBLESIDE},scene);
+  panel.position.set(12,5,-9.88);panel.material=screen;
+  // Highlight only the implemented educational station; no fake clickable labs.
+  const beacon=new B.PointLight('station 01 cyan navigation beacon',new V(12,4.5,-10),scene);
+  beacon.diffuse=C.FromHexString('#37d5ef');beacon.intensity=22;beacon.range=9;
+  return {signs:1,implementedMissions:1};
+ }
+};
