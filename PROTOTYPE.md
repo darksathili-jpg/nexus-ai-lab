@@ -53,3 +53,9 @@ Produire un véritable kit d'environnement 3D (GLB et textures PBR sous licence)
 - Le rendu automatisé rapporte `reactor: glb`, 1842 maillages et aucune erreur JavaScript. Cela ne mesure ni la qualité artistique ni les FPS sur matériel du lycée.
 - Nouvelle optimisation : fusion des maillages statiques architecturaux par matériau PBR dans `src/atrium-detail.js`. **Cette optimisation n'est pas encore validée par un nouveau rendu Chromium.**
 - Le fichier GLB (316 440 octets) a été produit, et l'étape de publication du workflow a réussi ; l'API de lecture texte GitHub ne peut pas décoder le contenu binaire, ce qui ne constitue pas une absence de fichier.
+
+## V0.7 — Preuve de rendu et traçabilité
+- Le test Chromium vérifie désormais la présence effective du réacteur GLB et d'une texture d'albédo sur le sol PBR.
+- Il enregistre une mesure FPS instantanée et l'empreinte SHA-256 de la capture PNG de bureau dans `artifacts/diagnostics.json`.
+- Attention : un FPS instantané sur runner CI n'est **pas** une mesure représentative des PC du lycée ; aucune garantie de 60 FPS n'est revendiquée.
+- L'empreinte de capture n'est pas une comparaison perceptuelle : elle ne prouve pas la ressemblance au concept art.
