@@ -34,5 +34,7 @@ jobs:
           test -f docs/ASSET_CREDITS.md
           test -f docs/ACADEMY_PRODUCTION_BLUEPRINT.md
           test -f curriculum/llm-nsi.json
+          test -f academy.html
+          grep -q 'curriculum/llm-nsi.json' academy.html
           grep -q 'NexusEnvironment.enhance' index.html
           grep -q 'nexusPython.run' index.html
