@@ -15,7 +15,7 @@ const path = require('node:path');
   canvas:!!document.querySelector('#game'),
   loaded:!document.querySelector('#loading'),
   mission:!!document.querySelector('#mission'),
-  meshes:window.BABYLON?.Engine?.LastCreatedScene?.meshes?.length||0,
+  meshes:window.BABYLON?.Engine?.LastCreatedEngine?.scenes?.[0]?.meshes?.length||0,
   diagnostics:document.querySelector('#nexus-diagnostics')?.textContent||'',
   webgl:!!document.querySelector('#game')?.getContext('webgl2')
  }));
