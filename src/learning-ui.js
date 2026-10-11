@@ -4,6 +4,26 @@
  let engine,definition,store,level='premiere',hint=0,callbacks={},ready=false,busy=false,runSerial=0,loadSerial=0;
  let loading=Promise.resolve(),dossier={};
  const message=text=>{$('learningStatus').textContent=text};
+ const checklist=document.createElement('ul');checklist.id='experimentChecklist';checklist.setAttribute('aria-label','Conditions de validation de l’expérience');$('validateExperiment').before(checklist);
+ const diagnostics=document.createElement('p');diagnostics.id='experimentDiagnostics';diagnostics.className='help';$('experimentStatus').after(diagnostics);
+ const lock=document.createElement('p');lock.id='pythonLock';lock.setAttribute('role','status');
+ const jump=document.createElement('a');jump.id='pythonUnlockLink';jump.textContent='Aller à l’étape manquante';jump.style.color='#7fe6e8';$('run').after(lock,jump);$('run').setAttribute('aria-describedby','pythonLock');
+ jump.onclick=e=>{e.preventDefault();const target=$(jump.dataset.target);target?.scrollIntoView({block:'start'});if(target){target.tabIndex=-1;target.focus({preventScroll:true})}};
+ function observations(values){const unique=[...new Set((Array.isArray(values)?values:[]).filter(s=>typeof s==='string'&&s.length<=1000))];const initial=definition.experiment.initial;return unique.includes(initial)?[initial,...unique.filter(s=>s!==initial).slice(-9)]:unique.slice(-10)}
+ function experimentConditions(){return [!!dossier.prediction,dossier.observations.includes(definition.experiment.initial),dossier.observations.some(s=>s!==definition.experiment.initial),definition.experiment.interpretation.every(q=>$('interpretation-'+q.id).value===q.answer)]}
+ const conditionLabels=['Prédiction enregistrée','Premier texte comparé (« chats ! »)','Deuxième texte distinct comparé','Deux réponses d’interprétation correctes'];
+ function showExperiment(){
+  if(!ready)return;
+  const flags=experimentConditions();checklist.replaceChildren();flags.forEach((ok,i)=>{const item=document.createElement('li');item.dataset.complete=String(ok);item.textContent=(ok?'✓ ':'À compléter : ')+conditionLabels[i];checklist.append(item)});
+  const r=engine.record('M03',level);diagnostics.textContent='État local · '+(level==='premiere'?'Première':'Terminale')+' · '+new Set(dossier.observations).size+' texte(s) distinct(s) conservé(s) · réponses renseignées : '+definition.experiment.interpretation.filter(q=>$('interpretation-'+q.id).value!=='').length+'/2 · expérience '+(r.steps.includes('experimenter')?'validée':'à valider')+' · '+(engine.persistent()?'sauvegarde disponible':'sauvegarde indisponible, état en mémoire');
+ }
+ function showLock(){
+  let reason,target;
+  if(!ready){reason='Python indisponible : le contenu pédagogique doit être chargé.';target='retryContent'}
+  else if(busy){reason='Python occupé : chargement ou exécution en cours. Fermer l’atelier annule l’exécution.';target=null}
+  else{const r=engine.record('M03',level);if(!r.steps.includes('comprendre')){reason='Python verrouillé : valider la compréhension.';target='stepUnderstand'}else if(!r.steps.includes('experimenter')){const flags=experimentConditions(),missing=conditionLabels.filter((_,i)=>!flags[i]);reason='Python verrouillé : '+(missing.length?'compléter '+missing.join(' ; '):'les quatre conditions sont remplies ; cliquer sur « Interpréter et terminer l’expérience »')+'.';target='stepExperiment'}else reason='Python prêt : les prérequis sont validés.'}
+  lock.textContent=reason;jump.hidden=!target;jump.dataset.target=target||'';jump.href='#'+(target||'stepPython');
+ }
  const questions=(container,items,prefix)=>{
   $(container).replaceChildren();
   for(const q of items){const block=document.createElement('div');block.className='question';
@@ -24,13 +44,15 @@
   $('experiment').disabled=!understood||!dossier.prediction;
   message(r.steps.length+'/5 activités réalisées · '+r.attempts+' tentative'+(r.attempts===1?'':'s')+' Python'+(engine.persistent()?' · dossier local':' · sauvegarde du dossier indisponible, copie tes réponses')+(r.steps.includes('transferer')?' · autoévaluation déclarée, maîtrise à relire par enseignant':''));
   callbacks.onProgress?.();
+  showExperiment();showLock();
  }
  function mark(step){try{engine.mark('M03',level,step);refresh();return true}catch(e){message(e.message);return false}}
  function restoreDossier(){
   const e=engine.record('M03',level).evidence||{};
   dossier={};
   if(e.prediction&&[e.prediction.split,e.prediction.simulation].every(n=>Number.isSafeInteger(n)&&n>=0&&n<=1000))dossier.prediction={...e.prediction};
-  dossier.observations=Array.isArray(e.observations)?e.observations.filter(s=>typeof s==='string'&&s.length<=1000).slice(-10):[];
+  dossier.observations=observations(e.observations);
+  dossier.interpretation={};for(const q of definition.experiment.interpretation){const value=e.interpretation?.[q.id];if(typeof value==='string'&&q.choices.some((_,i)=>String(i)===value)){dossier.interpretation[q.id]=value;$('interpretation-'+q.id).value=value}}
   dossier.response=typeof e.response==='string'?e.response.slice(0,4000):'';
   dossier.rubric=Array.isArray(e.rubric)?e.rubric.filter(n=>Number.isInteger(n)&&n>=0&&n<4):[];
   if(e.review==='auto-evaluation-declaree')dossier.review=e.review;
@@ -48,10 +70,12 @@
   hint=0;$('help').disabled=false;$('help').textContent='Indice 1';$('helpText').textContent='';
   for(const id of ['result','transferResult','understandingResult','experimentStatus'])$(id).textContent='';
   restoreDossier();draftStatus();refresh();
+  for(const q of definition.experiment.interpretation)$('interpretation-'+q.id).onchange=()=>{dossier.interpretation[q.id]=$('interpretation-'+q.id).value;saveDossier();showExperiment();showLock();$('experimentStatus').textContent='Réponses enregistrées. '+(experimentConditions().every(Boolean)?'Les quatre conditions sont remplies : valide l’expérience.':'Conditions restantes : '+conditionLabels.filter((_,i)=>!experimentConditions()[i]).join(' ; ')+'.')};
  }
  async function load(){
   const serial=++loadSerial,controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),15000);
   ready=false;$('retryContent').hidden=true;message('Chargement du référentiel…');
+  checklist.textContent='Chargement des conditions…';showLock();
   $('code').disabled=true;$('transferResponse').disabled=true;
   for(const id of ['run','understand','savePrediction','experiment','validateExperiment','checkTransfer','resetDraft','help'])$(id).disabled=true;
   try{
@@ -71,7 +95,7 @@
    $('transferRubric').replaceChildren();const legend=document.createElement('legend');legend.textContent='Grille d’autoévaluation — coche les critères argumentés dans ta note';$('transferRubric').append(legend);
    definition.transfer.rubric.forEach((text,i)=>{const label=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.id='rubric-'+i;input.onchange=saveTransfer;label.append(input,document.createTextNode(text));$('transferRubric').append(label)});
    ready=true;$('code').disabled=false;$('transferResponse').disabled=false;for(const id of ['understand','validateExperiment','resetDraft','help'])$(id).disabled=false;render();
-  }catch(e){if(serial===loadSerial){message('Chargement pédagogique impossible : '+(e.name==='AbortError'?'délai de 15 s dépassé':e.message)+'. Le jeu reste accessible ; réessaie le chargement.');$('retryContent').hidden=false}}
+  }catch(e){if(serial===loadSerial){message('Chargement pédagogique impossible : '+(e.name==='AbortError'?'délai de 15 s dépassé':e.message)+'. Le jeu reste accessible ; réessaie le chargement.');$('retryContent').hidden=false;showLock()}}
   finally{clearTimeout(timeout)}
  }
  $('retryContent').onclick=()=>{loading=load()};loading=load();
@@ -100,18 +124,18 @@
   const text=$('sample').value,result=window.NexusTokenisation.compare(text,definition.experiment);
   const rows=[['split() — blancs',result.split],['Sous-mots — simulation manuelle',result.simulation]];
   $('experimentResult').textContent='Texte : '+JSON.stringify(text)+'\nVocabulaire jouet : '+JSON.stringify(definition.experiment.vocabulary)+'\n'+rows.map(([label,r])=>label+' : '+r.units.length+' unités\nUnités : '+JSON.stringify(r.units)+'\nIDs : '+JSON.stringify(r.ids)+'\nDécodage des unités : '+JSON.stringify(r.decoded)+'\nInconnues : '+r.unknowns).join('\n\n')+'\n\nLes blancs sont omis : même sans <UNK>, les listes ne reconstruisent pas la mise en forme originale. Ceci n’est pas un tokenizer industriel.';
-  if(!dossier.observations.includes(text))dossier.observations.push(text);dossier.observations=dossier.observations.slice(-10);saveDossier();
+  dossier.observations=observations([...dossier.observations,text]);saveDossier();showExperiment();showLock();
   $('experimentStatus').textContent=dossier.observations.length+' texte(s) distinct(s) observé(s). Comparer ne valide pas l’étape : interprète les résultats.';
  };
  $('validateExperiment').onclick=()=>{
-  if(!ready)return;
-  if(!dossier.prediction||!dossier.observations.includes(definition.experiment.initial)||dossier.observations.length<2){$('experimentStatus').textContent='Prédis, observe « chats ! », puis manipule un autre texte avant d’interpréter.';return}
-  const wrong=definition.experiment.interpretation.filter(q=>$('interpretation-'+q.id).value!==q.answer);
-  if(wrong.length){$('experimentStatus').textContent='Interprétation à revoir : compare les pièces du vocabulaire et la liste décodée. Un ID ne restaure pas une unité inconnue.';return}
+  if(!ready){$('experimentStatus').textContent='Contenu pédagogique indisponible : recharge le contenu.';return}
+  const flags=experimentConditions();showExperiment();showLock();
+  if(!engine.record('M03',level).steps.includes('comprendre')){$('experimentStatus').textContent='Valide d’abord la compréhension.';return}
+  if(!flags.every(Boolean)){$('experimentStatus').textContent='Validation impossible. À compléter : '+conditionLabels.filter((_,i)=>!flags[i]).join(' ; ')+'.';return}
   if(mark('experimenter')){
    $('experimentStatus').textContent='Prédiction, manipulation et interprétation enregistrées.';
    if(engine.record('M03',level).pythonValidated){mark('programmer');mark('tester');$('result').textContent='Réussite Python antérieure conservée : contrat de tests inchangé. Tu peux néanmoins refaire les tests.'}
-  }
+  }else $('experimentStatus').textContent='Validation impossible : '+$('learningStatus').textContent;
  };
  $('help').onclick=()=>{if(!ready)return;$('helpText').textContent=definition.hints[hint++];$('help').textContent='Indice '+Math.min(hint+1,3);$('help').disabled=hint>=definition.hints.length};
  function feedback(msg){

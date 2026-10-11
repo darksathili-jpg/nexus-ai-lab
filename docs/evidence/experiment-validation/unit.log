@@ -1,0 +1,13 @@
+
+> nexus-ai-lab@0.1.0 test
+> node tests/syntax.cjs && node tests/collision.cjs && node tests/collision-gate.cjs && node tests/curriculum-gate.cjs && node tests/mission-engine.cjs && node tests/python-runner.cjs && node tests/draft-store.cjs && node tests/learning-foundations.cjs
+
+SYNTAX PASS: all source scripts and inline game/academy scripts
+Collision regression tests passed
+COLLISION GATE PASS: station both sides, reactor sweep, boundary, diagonal slide, 200 radial sweeps
+CURRICULUM GATE PASS: 12 modules; NSI levels, prerequisites, learning loop and scientific caveats
+MISSION ENGINE PASS: order, persistence, levels, versions, storage failures, locks, cycles
+MIGRATION PASS: previous steps/attempts/Python evidence retained, revised activities required, reload idempotent
+PYTHON RUNNER PASS: stale events, replacement, duplicate ready, timers, errors, send/constructor failures, recovery
+DRAFT STORE PASS: persistence, empty code, levels, confirmed reset, denied/corrupt storage and explicit repair
+LEARNING FOUNDATIONS PASS: split/subwords/IDs/Unicode/unknowns and content validation

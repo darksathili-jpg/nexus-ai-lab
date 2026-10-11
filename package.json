@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "test": "node tests/syntax.cjs && node tests/collision.cjs && node tests/collision-gate.cjs && node tests/curriculum-gate.cjs && node tests/mission-engine.cjs && node tests/python-runner.cjs && node tests/draft-store.cjs && node tests/learning-foundations.cjs",
-    "test:browser": "node tests/quality-gate.cjs && node tests/atrium-browser.cjs && node tests/learning-browser.cjs && node tests/learning-storage-browser.cjs && node tests/python-access-browser.cjs"
+    "test:browser": "node tests/quality-gate.cjs && node tests/atrium-browser.cjs && node tests/learning-browser.cjs && node tests/learning-storage-browser.cjs && node tests/python-access-browser.cjs && node tests/experiment-browser.cjs"
   },
   "devDependencies": {
     "playwright": "1.56.1"

@@ -1,0 +1,53 @@
+restored partial {
+  prediction: { split: 2, simulation: 3 },
+  observations: [ 'chats !', 'chat !' ],
+  answers: [ '', '' ],
+  steps: [ 'comprendre' ]
+}
+feedback Interprétation à revoir : compare les pièces du vocabulaire et la liste décodée. Un ID ne restaure pas une unité inconnue.
+validated {
+  prediction: { split: 2, simulation: 3 },
+  observations: [ 'chats !', 'chat !' ],
+  answers: [ '0', '1' ],
+  steps: [ 'comprendre', 'experimenter' ]
+} run disabled false
+after 11 distinct texts {
+  prediction: { split: 2, simulation: 3 },
+  observations: [
+    'example1', 'example2',
+    'example3', 'example4',
+    'example5', 'example6',
+    'example7', 'example8',
+    'example9', 'example10'
+  ],
+  answers: [ '0', '1' ],
+  steps: [ 'comprendre', 'experimenter' ]
+}
+feedback Prédis, observe « chats ! », puis manipule un autre texte avant d’interpréter.
+node : node:internal/process/promises:394
+Au caractère Ligne:12 : 2
++  node artifacts/experiment-repro.cjs > artifacts/experiment-before-co ...
++  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (node:internal/process/promises:394:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+route.fetch: connect ECONNREFUSED 127.0.0.1:8765
+Call log:
+[2m  - → GET http://127.0.0.1:8765/src/learning-ui.js[22m
+[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) 
+HeadlessChrome/141.0.7390.37 Safari/537.36[22m
+[2m    - accept: */*[22m
+[2m    - accept-encoding: gzip,deflate,br[22m
+[2m    - referer: http://127.0.0.1:8765/?quality=low[22m
+[2m    - sec-ch-ua: "HeadlessChrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"[22m
+[2m    - sec-ch-ua-mobile: ?0[22m
+[2m    - sec-ch-ua-platform: "Windows"[22m
+
+    at C:\Users\tsaut\OneDrive\Documents\GitHub\nexus-ai-lab\artifacts\experiment-repro.cjs:4:76 {
+  name: 'Error'
+}
+
+Node.js v22.13.1

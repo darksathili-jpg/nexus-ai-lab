@@ -1,0 +1,32 @@
+
+> nexus-ai-lab@0.1.0 test:browser
+> node tests/quality-gate.cjs && node tests/atrium-browser.cjs && node tests/learning-browser.cjs && node tests/learning-storage-browser.cjs && node tests/python-access-browser.cjs && node tests/experiment-browser.cjs
+
+QUALITY GATE PASS: sign front/rear, touch movement and interaction, Escape, mobile reward, mission viewport, controls
+{
+  "result": {
+    "fps": 6,
+    "renderedFrames": 7.2889839156210545,
+    "floorTexture": true,
+    "canvas": true,
+    "loaded": true,
+    "mission": true,
+    "meshes": 734,
+    "diagnostics": "QUALITÉ LOW · 6 FPS · 734 MAILLAGES",
+    "reactor": "glb",
+    "webgl": true,
+    "actualCanvasWidth": 800,
+    "actualCanvasHeight": 500
+  },
+  "errors": []
+}
+LEARNING BROWSER PASS: prediction/manipulation/interpretation gates, 4 distinctions, drafts/reload/levels/empty/reset, real Python 8/12 cases, syntax/timeout/recovery/cancel/level change, local free transfer and declared rubric, 3 resolutions, Worker/content failure recovery
+STORAGE/LOAD BROWSER PASS: corrupt/quota/denied memory fallback, per-level drafts, historical migration, malformed mission, 15s loading timeout and retry
+REPRODUCED: 1/5, zero attempts, run disabled; no Python execution requested
+PASS: simulated CDN failure reports error, re-enables button and preserves draft
+PASS: CDN restored, retry succeeds with unchanged draft
+PASS: missing function reported, retry succeeds
+EXPERIMENT PASS premiere fresh storage 1/5 -> 2/5, indicators, answers/reload, >10 comparisons, Python, no JS errors
+EXPERIMENT PASS premiere partial dossier 1/5 -> 2/5, indicators, answers/reload, >10 comparisons, Python, no JS errors
+EXPERIMENT PASS terminale fresh storage 1/5 -> 2/5, indicators, answers/reload, >10 comparisons, Python, no JS errors
+EXPERIMENT PASS terminale partial dossier 1/5 -> 2/5, indicators, answers/reload, >10 comparisons, Python, no JS errors

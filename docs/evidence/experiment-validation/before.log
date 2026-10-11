@@ -1,0 +1,27 @@
+restored partial {
+  prediction: { split: 2, simulation: 3 },
+  observations: [ 'chats !', 'chat !' ],
+  answers: [ '', '' ],
+  steps: [ 'comprendre' ]
+}
+feedback Interprétation à revoir : compare les pièces du vocabulaire et la liste décodée. Un ID ne restaure pas une unité inconnue.
+validated {
+  prediction: { split: 2, simulation: 3 },
+  observations: [ 'chats !', 'chat !' ],
+  answers: [ '0', '1' ],
+  steps: [ 'comprendre', 'experimenter' ]
+} run disabled false
+after 11 distinct texts {
+  prediction: { split: 2, simulation: 3 },
+  observations: [
+    'example1', 'example2',
+    'example3', 'example4',
+    'example5', 'example6',
+    'example7', 'example8',
+    'example9', 'example10'
+  ],
+  answers: [ '0', '1' ],
+  steps: [ 'comprendre', 'experimenter' ]
+}
+feedback Prédis, observe « chats ! », puis manipule un autre texte avant d’interpréter.
+JS errors []
