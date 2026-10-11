@@ -18,6 +18,9 @@ jobs:
           node --check src/performance.js
           node --check src/surface-detail.js
           node --check src/wayfinding.js
+          node --check src/collision.js
+          node --check tests/collision.cjs
+          node tests/collision.cjs
           node --check src/python-runner.js
           node --check src/python-worker.js
       - name: Check essential assets
