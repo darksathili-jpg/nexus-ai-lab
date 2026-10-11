@@ -18,6 +18,10 @@ window.NexusWayfinding={
   ctx.fillStyle='#b3d8e4';ctx.font='40px Arial';ctx.fillText('PYTHON  •  ANALYSE DU TEXTE',60,320);
   ctx.fillStyle='#ffca83';ctx.font='bold 40px Arial';ctx.fillText('APPROCHER + E POUR ENTRER',60,413);
   textTexture.update();
+  // The double-sided plane is viewed from its reverse in the approach corridor.
+  // Mirror U coordinates so lettering is readable from that side.
+  textTexture.uScale=-1;
+  textTexture.uOffset=1;
   const screen=new B.StandardMaterial('station 01 actual sign',scene);
   screen.diffuseTexture=textTexture;screen.emissiveTexture=textTexture;screen.disableLighting=true;screen.backFaceCulling=false;
   const frame=B.MeshBuilder.CreateBox('station 01 sign physical frame',{width:7.6,height:3.8,depth:.18},scene);
